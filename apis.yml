@@ -1,0 +1,28 @@
+aid: spinnaker
+name: Spinnaker
+description: >-
+  Spinnaker is an open source multi-cloud continuous delivery platform for releasing software changes with high velocity and confidence.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Containers
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/spinnaker/refs/heads/main/apis.yml
+created: '2026-03-26'
+modified: '2026-03-26'
+specificationVersion: '0.19'
+apis:
+  - aid: spinnaker:spinnaker
+    name: Spinnaker
+    description: >-
+      Spinnaker is an open source multi-cloud continuous delivery platform for releasing software changes with high velocity and confidence.
+    humanURL: https://spinnaker.io/
+    tags:
+      - Containers
+    properties: []
+common:
+  - type: Website
+    url: https://spinnaker.io/
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
