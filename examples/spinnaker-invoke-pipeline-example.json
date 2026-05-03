@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://spinnaker.example.com:8084/applications/my-web-app/pipelineConfigs/Deploy%20to%20Production",
+    "headers": {
+      "Authorization": "Bearer {oauth_token}",
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    "body": {
+      "parameters": {
+        "imageTag": "v2.5.1",
+        "region": "us-east-1",
+        "instanceCount": "3"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ref": "/tasks/01JPZX3N8KQ7VB4PZ5W6YRKM4A"
+    }
+  }
+}

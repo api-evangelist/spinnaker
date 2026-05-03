@@ -1,0 +1,107 @@
+vocabulary:
+  name: Spinnaker Vocabulary
+  description: >-
+    Domain vocabulary for the Spinnaker multi-cloud continuous delivery platform
+    covering pipeline management, deployment orchestration, cloud infrastructure,
+    and DevOps terminology.
+  version: "1.0"
+  created: "2026-05-02"
+  modified: "2026-05-02"
+  tags:
+    - Continuous Delivery
+    - Pipelines
+    - DevOps
+    - Cloud Infrastructure
+
+terms:
+  - term: Gate
+    definition: >-
+      The Spinnaker API Gateway service that serves as the primary REST interface
+      for the Spinnaker UI (Deck) and external API clients. Gate runs on port 8084
+      by default and aggregates calls to all other Spinnaker microservices.
+    related: [API, Deck, Microservices]
+
+  - term: Application
+    definition: >-
+      A logical grouping of cloud resources in Spinnaker representing a deployable
+      service. Applications contain clusters, load balancers, security groups,
+      and pipeline configurations. Each application maps to one or more cloud accounts.
+    synonyms: [App, Service]
+    related: [Pipeline, Cluster, Deployment]
+
+  - term: Pipeline
+    definition: >-
+      A configurable sequence of deployment stages in Spinnaker that automates
+      the release process. Pipelines can be triggered by CI builds, schedules,
+      or manual invocation and orchestrate baking, deploying, testing, and
+      traffic shifting operations.
+    synonyms: [Deployment Pipeline, Release Pipeline, CD Pipeline]
+    related: [Stage, Trigger, Application]
+
+  - term: Stage
+    definition: >-
+      A single unit of work within a Spinnaker pipeline, such as deploying a
+      server group, running a script, waiting for approval, or checking a canary.
+      Stages can run sequentially or in parallel.
+    synonyms: [Step, Task]
+    related: [Pipeline, Deploy Stage, Wait Stage]
+
+  - term: Cluster
+    definition: >-
+      A logical grouping of server groups in Spinnaker, typically representing
+      the same workload across multiple cloud regions or availability zones.
+      Clusters are named by combining the application name, stack, and detail.
+    related: [Server Group, Application, Region]
+
+  - term: Server Group
+    definition: >-
+      The basic deployable unit in Spinnaker representing an autoscaling group
+      (AWS ASG), Kubernetes ReplicaSet, or equivalent cloud construct containing
+      instances of the same version of a service.
+    synonyms: [ASG, ReplicaSet, Instance Group, Deployment]
+    related: [Cluster, Instance, Capacity]
+
+  - term: Pipeline Execution
+    definition: >-
+      A running or completed instance of a pipeline. Each invocation creates a
+      new execution with its own ID, stage history, and status. Executions can
+      be running, paused, succeeded, terminal (failed), or canceled.
+    related: [Pipeline, Stage Execution, Status]
+
+  - term: Trigger
+    definition: >-
+      A mechanism that initiates a pipeline execution. Triggers can be CI build
+      completions, Docker image publications, cron schedules, webhooks, or manual
+      invocations from the Spinnaker UI or API.
+    synonyms: [Initiator]
+    related: [Pipeline, CI, Jenkins]
+
+  - term: Bake
+    definition: >-
+      A Spinnaker stage type that creates a machine image (AMI, GCE image, etc.)
+      from a package produced by a CI system. Bake stages use Rosco (Spinnaker's
+      image bakery) to produce immutable deployment artifacts.
+    related: [Stage, AMI, Deploy]
+
+  - term: Deck
+    definition: >-
+      The Spinnaker frontend web application (UI) that provides a browser-based
+      interface for managing applications, pipelines, and deployments. Deck
+      communicates exclusively with Gate.
+    synonyms: [Spinnaker UI, Frontend]
+    related: [Gate, Application, Pipeline]
+
+  - term: Orca
+    definition: >-
+      The Spinnaker microservice responsible for pipeline and task orchestration.
+      Orca manages the state machine for pipeline executions, coordinates stage
+      execution, and handles retries and compensating actions.
+    related: [Pipeline, Stage, Microservices]
+
+  - term: Canary
+    definition: >-
+      A progressive delivery strategy in Spinnaker that routes a small percentage
+      of production traffic to a new version before full rollout, enabling
+      automated or manual comparison of metrics between old and new versions.
+    synonyms: [Canary Release, Progressive Delivery]
+    related: [Deployment, Stage, Kayenta]

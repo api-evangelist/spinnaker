@@ -1,0 +1,35 @@
+{
+  "title": "Spinnaker Pipeline Structure",
+  "description": "JSON Structure document describing the Spinnaker pipeline execution data model.",
+  "type": "object",
+  "fields": [
+    { "name": "id", "type": "string", "required": true, "description": "Unique execution ID" },
+    { "name": "application", "type": "string", "required": true, "description": "Spinnaker application name" },
+    { "name": "name", "type": "string", "required": true, "description": "Pipeline name" },
+    { "name": "status", "type": "enum[NOT_STARTED,RUNNING,PAUSED,SUCCEEDED,TERMINAL,CANCELED]", "required": true, "description": "Execution status" },
+    { "name": "startTime", "type": "integer", "required": false, "description": "Start timestamp (ms)" },
+    { "name": "endTime", "type": "integer", "required": false, "description": "End timestamp (ms)" },
+    { "name": "trigger", "type": "object", "required": false, "description": "Trigger configuration" }
+  ],
+  "relationships": [
+    {
+      "name": "stages",
+      "type": "StageExecution",
+      "cardinality": "one-to-many",
+      "description": "Stage executions within this pipeline run"
+    }
+  ],
+  "relatedTypes": [
+    {
+      "name": "StageExecution",
+      "fields": [
+        { "name": "id", "type": "string", "description": "Stage execution ID" },
+        { "name": "name", "type": "string", "description": "Stage name" },
+        { "name": "type", "type": "string", "description": "Stage type (deploy, wait, etc.)" },
+        { "name": "status", "type": "enum", "description": "Stage status" },
+        { "name": "startTime", "type": "integer", "description": "Start timestamp (ms)" },
+        { "name": "endTime", "type": "integer", "description": "End timestamp (ms)" }
+      ]
+    }
+  ]
+}

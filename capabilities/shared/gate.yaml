@@ -1,0 +1,407 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Spinnaker Gate API"
+  description: >-
+    Shared capability definition for the Spinnaker Gate API — the primary REST
+    gateway for the Spinnaker continuous delivery platform. Provides access to
+    application management, pipeline execution and control, cluster management,
+    and cloud infrastructure operations across multiple cloud providers.
+  tags:
+    - Spinnaker
+    - Continuous Delivery
+    - Pipelines
+    - Deployments
+    - Cloud Infrastructure
+  created: "2026-05-02"
+  modified: "2026-05-02"
+
+binds:
+  - namespace: env
+    keys:
+      SPINNAKER_OAUTH_TOKEN: SPINNAKER_OAUTH_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: spinnaker
+      baseUri: http://localhost:8084
+      description: "Spinnaker Gate REST API for continuous delivery management"
+      authentication:
+        type: bearer
+        token: "{{SPINNAKER_OAUTH_TOKEN}}"
+      resources:
+        - name: applications
+          path: /applications
+          description: "Application management"
+          operations:
+            - name: list-applications
+              method: GET
+              description: "List all Spinnaker applications"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: application
+          path: /applications/{application}
+          description: "Single application operations"
+          operations:
+            - name: get-application
+              method: GET
+              description: "Get application details"
+              inputParameters:
+                - name: application
+                  in: path
+                  type: string
+                  required: true
+                  description: "Application name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: pipeline-configs
+          path: /applications/{application}/pipelineConfigs
+          description: "Pipeline configuration management"
+          operations:
+            - name: list-pipeline-configs
+              method: GET
+              description: "List pipeline configurations for an application"
+              inputParameters:
+                - name: application
+                  in: path
+                  type: string
+                  required: true
+                  description: "Application name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: pipeline-executions
+          path: /applications/{application}/pipelines
+          description: "Pipeline execution history"
+          operations:
+            - name: list-pipeline-executions
+              method: GET
+              description: "List pipeline executions for an application"
+              inputParameters:
+                - name: application
+                  in: path
+                  type: string
+                  required: true
+                  description: "Application name"
+                - name: limit
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Max executions to return"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: invoke-pipeline
+          path: /applications/{application}/pipelineConfigs/{pipelineName}
+          description: "Pipeline invocation"
+          operations:
+            - name: invoke-pipeline
+              method: POST
+              description: "Invoke a pipeline by name"
+              inputParameters:
+                - name: application
+                  in: path
+                  type: string
+                  required: true
+                  description: "Application name"
+                - name: pipelineName
+                  in: path
+                  type: string
+                  required: true
+                  description: "Pipeline name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  parameters: "{{tools.parameters}}"
+        - name: pipeline-execution
+          path: /pipelines/{id}
+          description: "Individual pipeline execution operations"
+          operations:
+            - name: get-pipeline-execution
+              method: GET
+              description: "Get pipeline execution details"
+              inputParameters:
+                - name: id
+                  in: path
+                  type: string
+                  required: true
+                  description: "Pipeline execution ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: cancel-pipeline
+          path: /pipelines/{id}/cancel
+          description: "Cancel pipeline execution"
+          operations:
+            - name: cancel-pipeline
+              method: PUT
+              description: "Cancel a running pipeline execution"
+              inputParameters:
+                - name: id
+                  in: path
+                  type: string
+                  required: true
+                  description: "Pipeline execution ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: pause-pipeline
+          path: /pipelines/{id}/pause
+          description: "Pause pipeline execution"
+          operations:
+            - name: pause-pipeline
+              method: PUT
+              description: "Pause a running pipeline execution"
+              inputParameters:
+                - name: id
+                  in: path
+                  type: string
+                  required: true
+                  description: "Pipeline execution ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: resume-pipeline
+          path: /pipelines/{id}/resume
+          description: "Resume pipeline execution"
+          operations:
+            - name: resume-pipeline
+              method: PUT
+              description: "Resume a paused pipeline execution"
+              inputParameters:
+                - name: id
+                  in: path
+                  type: string
+                  required: true
+                  description: "Pipeline execution ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: clusters
+          path: /applications/{application}/clusters
+          description: "Cluster management"
+          operations:
+            - name: list-clusters
+              method: GET
+              description: "List clusters for an application"
+              inputParameters:
+                - name: application
+                  in: path
+                  type: string
+                  required: true
+                  description: "Application name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: load-balancers
+          path: /applications/{application}/loadBalancers
+          description: "Load balancer management"
+          operations:
+            - name: list-load-balancers
+              method: GET
+              description: "List load balancers for an application"
+              inputParameters:
+                - name: application
+                  in: path
+                  type: string
+                  required: true
+                  description: "Application name"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: search
+          path: /search
+          description: "Cross-resource search"
+          operations:
+            - name: search
+              method: GET
+              description: "Search across all Spinnaker resources"
+              inputParameters:
+                - name: q
+                  in: query
+                  type: string
+                  required: true
+                  description: "Search query"
+                - name: type
+                  in: query
+                  type: string
+                  required: false
+                  description: "Resource type filter"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: spinnaker-rest
+      resources:
+        - path: /v1/applications
+          name: applications
+          description: "Application management"
+          operations:
+            - method: GET
+              name: list-applications
+              description: "List all applications"
+              call: "spinnaker.list-applications"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/applications/{application}/pipelines
+          name: pipeline-executions
+          description: "Pipeline execution history"
+          operations:
+            - method: GET
+              name: list-pipeline-executions
+              description: "List pipeline executions"
+              call: "spinnaker.list-pipeline-executions"
+              with:
+                application: "rest.application"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/pipelines/{id}
+          name: pipeline-execution
+          description: "Individual pipeline execution"
+          operations:
+            - method: GET
+              name: get-pipeline-execution
+              description: "Get pipeline execution details"
+              call: "spinnaker.get-pipeline-execution"
+              with:
+                id: "rest.id"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: spinnaker-mcp
+      transport: http
+      tools:
+        - name: list-applications
+          description: "List all Spinnaker applications"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "spinnaker.list-applications"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-application
+          description: "Get details for a specific Spinnaker application"
+          hints:
+            readOnly: true
+          call: "spinnaker.get-application"
+          with:
+            application: "tools.application"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-pipeline-executions
+          description: "List recent pipeline execution history for an application"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "spinnaker.list-pipeline-executions"
+          with:
+            application: "tools.application"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-pipeline-execution
+          description: "Get full details and stage statuses of a pipeline execution"
+          hints:
+            readOnly: true
+          call: "spinnaker.get-pipeline-execution"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: invoke-pipeline
+          description: "Trigger a pipeline execution by name"
+          hints:
+            readOnly: false
+          call: "spinnaker.invoke-pipeline"
+          with:
+            application: "tools.application"
+            pipelineName: "tools.pipeline_name"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: cancel-pipeline
+          description: "Cancel a running pipeline execution"
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "spinnaker.cancel-pipeline"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: pause-pipeline
+          description: "Pause a running pipeline execution"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "spinnaker.pause-pipeline"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: resume-pipeline
+          description: "Resume a paused pipeline execution"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "spinnaker.resume-pipeline"
+          with:
+            id: "tools.id"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: search-resources
+          description: "Search across all Spinnaker resources (applications, clusters, load balancers)"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "spinnaker.search"
+          with:
+            q: "tools.q"
+          outputParameters:
+            - type: object
+              mapping: "$."

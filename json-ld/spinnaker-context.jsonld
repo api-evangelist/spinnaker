@@ -1,0 +1,66 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "spinnaker": "https://spinnaker.io/vocab/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Application": "spinnaker:Application",
+    "Pipeline": "spinnaker:Pipeline",
+    "PipelineExecution": "spinnaker:PipelineExecution",
+    "Stage": "spinnaker:Stage",
+    "Cluster": "spinnaker:Cluster",
+    "ServerGroup": "spinnaker:ServerGroup",
+    "LoadBalancer": "spinnaker:LoadBalancer",
+
+    "id": "@id",
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "spinnaker:status",
+      "@type": "xsd:string"
+    },
+    "application": {
+      "@id": "spinnaker:application",
+      "@type": "xsd:string"
+    },
+    "stages": {
+      "@id": "spinnaker:stages",
+      "@container": "@list"
+    },
+    "startTime": {
+      "@id": "schema:startDate",
+      "@type": "xsd:integer"
+    },
+    "endTime": {
+      "@id": "schema:endDate",
+      "@type": "xsd:integer"
+    },
+    "trigger": {
+      "@id": "spinnaker:trigger",
+      "@type": "@id"
+    },
+    "account": {
+      "@id": "spinnaker:account",
+      "@type": "xsd:string"
+    },
+    "region": {
+      "@id": "spinnaker:region",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "spinnaker:stageType",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "xsd:string"
+    }
+  }
+}

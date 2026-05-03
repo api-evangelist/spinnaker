@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/api-evangelist/spinnaker/json-schema/spinnaker-pipeline-schema.json",
+  "title": "Spinnaker Pipeline Execution",
+  "description": "JSON Schema for a Spinnaker pipeline execution, including stages, status, and trigger information.",
+  "type": "object",
+  "required": ["id", "application", "name", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique pipeline execution ID"
+    },
+    "application": {
+      "type": "string",
+      "description": "Spinnaker application name"
+    },
+    "name": {
+      "type": "string",
+      "description": "Pipeline name"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current execution status",
+      "enum": ["NOT_STARTED", "RUNNING", "PAUSED", "SUSPENDED", "SUCCEEDED", "FAILED_CONTINUE", "TERMINAL", "CANCELED", "REDIRECT", "STOPPED", "SKIPPED", "BUFFERED"]
+    },
+    "startTime": {
+      "type": "integer",
+      "description": "Execution start time in milliseconds since epoch"
+    },
+    "endTime": {
+      "type": "integer",
+      "description": "Execution end time in milliseconds since epoch"
+    },
+    "trigger": {
+      "type": "object",
+      "description": "Trigger that initiated this execution",
+      "additionalProperties": true
+    },
+    "stages": {
+      "type": "array",
+      "description": "Stage executions in this pipeline run",
+      "items": {
+        "$ref": "#/$defs/StageExecution"
+      }
+    }
+  },
+  "$defs": {
+    "StageExecution": {
+      "type": "object",
+      "description": "A single stage within a pipeline execution",
+      "required": ["id", "type", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique stage execution ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Stage display name"
+        },
+        "type": {
+          "type": "string",
+          "description": "Stage type (deploy, wait, manualJudgment, bake, findImage, etc.)"
+        },
+        "status": {
+          "type": "string",
+          "description": "Stage status",
+          "enum": ["NOT_STARTED", "RUNNING", "PAUSED", "SUCCEEDED", "FAILED_CONTINUE", "TERMINAL", "CANCELED", "SKIPPED"]
+        },
+        "startTime": {
+          "type": "integer",
+          "description": "Stage start time in milliseconds"
+        },
+        "endTime": {
+          "type": "integer",
+          "description": "Stage end time in milliseconds"
+        },
+        "context": {
+          "type": "object",
+          "description": "Stage context data and outputs",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}
