@@ -1,0 +1,112 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Spinnaker Gate API — Build Services
+  description: 'Spinnaker Gate API — Build Services. 2 operations. Lead operation: List Build Masters. Self-contained Naftiko
+    capability covering one Spinnaker business surface.'
+  tags:
+  - Spinnaker
+  - Build Services
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SPINNAKER_API_KEY: SPINNAKER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: gate-build-services
+    baseUri: http://localhost:8084
+    description: Spinnaker Gate API — Build Services business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-builds
+      path: /v2/builds
+      operations:
+      - name: listbuildmasters
+        method: GET
+        description: List Build Masters
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-builds-buildMaster-jobs
+      path: /v2/builds/{buildMaster}/jobs
+      operations:
+      - name: listbuildjobs
+        method: GET
+        description: List Build Master Jobs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: buildMaster
+          in: path
+          type: string
+          description: The build master name
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.SPINNAKER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: gate-build-services-rest
+    port: 8080
+    description: REST adapter for Spinnaker Gate API — Build Services. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v2/builds
+      name: v2-builds
+      description: REST surface for v2-builds.
+      operations:
+      - method: GET
+        name: listbuildmasters
+        description: List Build Masters
+        call: gate-build-services.listbuildmasters
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v2/builds/{buildmaster}/jobs
+      name: v2-builds-buildmaster-jobs
+      description: REST surface for v2-builds-buildMaster-jobs.
+      operations:
+      - method: GET
+        name: listbuildjobs
+        description: List Build Master Jobs
+        call: gate-build-services.listbuildjobs
+        with:
+          buildMaster: rest.buildMaster
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: gate-build-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Spinnaker Gate API — Build Services. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-build-masters
+      description: List Build Masters
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-build-services.listbuildmasters
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-build-master-jobs
+      description: List Build Master Jobs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-build-services.listbuildjobs
+      with:
+        buildMaster: tools.buildMaster
+      outputParameters:
+      - type: object
+        mapping: $.

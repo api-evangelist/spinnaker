@@ -1,0 +1,127 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Spinnaker Gate API — Applications
+  description: 'Spinnaker Gate API — Applications. 2 operations. Lead operation: List All Applications. Self-contained Naftiko
+    capability covering one Spinnaker business surface.'
+  tags:
+  - Spinnaker
+  - Applications
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SPINNAKER_API_KEY: SPINNAKER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: gate-applications
+    baseUri: http://localhost:8084
+    description: Spinnaker Gate API — Applications business capability. Self-contained, no shared references.
+    resources:
+    - name: applications
+      path: /applications
+      operations:
+      - name: listapplications
+        method: GET
+        description: List All Applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: account
+          in: query
+          type: string
+          description: Filter applications by cloud account
+        - name: owner
+          in: query
+          type: string
+          description: Filter applications by owner email
+    - name: applications-application
+      path: /applications/{application}
+      operations:
+      - name: getapplication
+        method: GET
+        description: Get Application Details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: application
+          in: path
+          type: string
+          description: The Spinnaker application name
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.SPINNAKER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: gate-applications-rest
+    port: 8080
+    description: REST adapter for Spinnaker Gate API — Applications. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/applications
+      name: applications
+      description: REST surface for applications.
+      operations:
+      - method: GET
+        name: listapplications
+        description: List All Applications
+        call: gate-applications.listapplications
+        with:
+          account: rest.account
+          owner: rest.owner
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application}
+      name: applications-application
+      description: REST surface for applications-application.
+      operations:
+      - method: GET
+        name: getapplication
+        description: Get Application Details
+        call: gate-applications.getapplication
+        with:
+          application: rest.application
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: gate-applications-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Spinnaker Gate API — Applications. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-all-applications
+      description: List All Applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-applications.listapplications
+      with:
+        account: tools.account
+        owner: tools.owner
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-application-details
+      description: Get Application Details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-applications.getapplication
+      with:
+        application: tools.application
+      outputParameters:
+      - type: object
+        mapping: $.

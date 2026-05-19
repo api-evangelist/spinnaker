@@ -1,0 +1,127 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Spinnaker Gate API — Load Balancers
+  description: 'Spinnaker Gate API — Load Balancers. 2 operations. Lead operation: List Application Load Balancers. Self-contained
+    Naftiko capability covering one Spinnaker business surface.'
+  tags:
+  - Spinnaker
+  - Load Balancers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SPINNAKER_API_KEY: SPINNAKER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: gate-load-balancers
+    baseUri: http://localhost:8084
+    description: Spinnaker Gate API — Load Balancers business capability. Self-contained, no shared references.
+    resources:
+    - name: applications-application-loadBalancers
+      path: /applications/{application}/loadBalancers
+      operations:
+      - name: listapplicationloadbalancers
+        method: GET
+        description: List Application Load Balancers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: application
+          in: path
+          type: string
+          description: The Spinnaker application name
+          required: true
+        - name: provider
+          in: query
+          type: string
+          description: Cloud provider to filter by
+    - name: loadBalancers
+      path: /loadBalancers
+      operations:
+      - name: listloadbalancers
+        method: GET
+        description: List All Load Balancers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: provider
+          in: query
+          type: string
+          description: Cloud provider name
+    authentication:
+      type: bearer
+      token: '{{env.SPINNAKER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: gate-load-balancers-rest
+    port: 8080
+    description: REST adapter for Spinnaker Gate API — Load Balancers. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application}/loadbalancers
+      name: applications-application-loadbalancers
+      description: REST surface for applications-application-loadBalancers.
+      operations:
+      - method: GET
+        name: listapplicationloadbalancers
+        description: List Application Load Balancers
+        call: gate-load-balancers.listapplicationloadbalancers
+        with:
+          application: rest.application
+          provider: rest.provider
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/loadbalancers
+      name: loadbalancers
+      description: REST surface for loadBalancers.
+      operations:
+      - method: GET
+        name: listloadbalancers
+        description: List All Load Balancers
+        call: gate-load-balancers.listloadbalancers
+        with:
+          provider: rest.provider
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: gate-load-balancers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Spinnaker Gate API — Load Balancers. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-application-load-balancers
+      description: List Application Load Balancers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-load-balancers.listapplicationloadbalancers
+      with:
+        application: tools.application
+        provider: tools.provider
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-all-load-balancers
+      description: List All Load Balancers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-load-balancers.listloadbalancers
+      with:
+        provider: tools.provider
+      outputParameters:
+      - type: object
+        mapping: $.

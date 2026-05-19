@@ -1,0 +1,447 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Spinnaker Gate API — Pipelines
+  description: 'Spinnaker Gate API — Pipelines. 9 operations. Lead operation: List Pipeline Configurations. Self-contained
+    Naftiko capability covering one Spinnaker business surface.'
+  tags:
+  - Spinnaker
+  - Pipelines
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SPINNAKER_API_KEY: SPINNAKER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: gate-pipelines
+    baseUri: http://localhost:8084
+    description: Spinnaker Gate API — Pipelines business capability. Self-contained, no shared references.
+    resources:
+    - name: applications-application-pipelineConfigs
+      path: /applications/{application}/pipelineConfigs
+      operations:
+      - name: listpipelineconfigs
+        method: GET
+        description: List Pipeline Configurations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: application
+          in: path
+          type: string
+          description: The Spinnaker application name
+          required: true
+    - name: applications-application-pipelineConfigs-pipelineName
+      path: /applications/{application}/pipelineConfigs/{pipelineName}
+      operations:
+      - name: invokepipelineconfig
+        method: POST
+        description: Invoke Pipeline By Name
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: application
+          in: path
+          type: string
+          description: The Spinnaker application name
+          required: true
+        - name: pipelineName
+          in: path
+          type: string
+          description: The name of the pipeline configuration to invoke
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: applications-application-pipelines
+      path: /applications/{application}/pipelines
+      operations:
+      - name: listpipelineexecutions
+        method: GET
+        description: List Pipeline Executions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: application
+          in: path
+          type: string
+          description: The Spinnaker application name
+          required: true
+        - name: limit
+          in: query
+          type: integer
+          description: Maximum number of executions to return
+        - name: pipelineName
+          in: query
+          type: string
+          description: Filter by pipeline name
+        - name: statuses
+          in: query
+          type: string
+          description: Filter by execution status (comma-separated)
+    - name: pipelines
+      path: /pipelines
+      operations:
+      - name: savepipeline
+        method: POST
+        description: Save Pipeline Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: pipelines-id
+      path: /pipelines/{id}
+      operations:
+      - name: getpipelineexecution
+        method: GET
+        description: Get Pipeline Execution
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The pipeline execution ID
+          required: true
+      - name: deletepipeline
+        method: DELETE
+        description: Delete Pipeline Execution
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The pipeline execution ID
+          required: true
+    - name: pipelines-id-cancel
+      path: /pipelines/{id}/cancel
+      operations:
+      - name: cancelpipelineexecution
+        method: PUT
+        description: Cancel Pipeline Execution
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The pipeline execution ID
+          required: true
+        - name: reason
+          in: query
+          type: string
+          description: Reason for cancellation
+    - name: pipelines-id-pause
+      path: /pipelines/{id}/pause
+      operations:
+      - name: pausepipelineexecution
+        method: PUT
+        description: Pause Pipeline Execution
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The pipeline execution ID
+          required: true
+    - name: pipelines-id-resume
+      path: /pipelines/{id}/resume
+      operations:
+      - name: resumepipelineexecution
+        method: PUT
+        description: Resume Pipeline Execution
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          description: The pipeline execution ID
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.SPINNAKER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: gate-pipelines-rest
+    port: 8080
+    description: REST adapter for Spinnaker Gate API — Pipelines. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/applications/{application}/pipelineconfigs
+      name: applications-application-pipelineconfigs
+      description: REST surface for applications-application-pipelineConfigs.
+      operations:
+      - method: GET
+        name: listpipelineconfigs
+        description: List Pipeline Configurations
+        call: gate-pipelines.listpipelineconfigs
+        with:
+          application: rest.application
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application}/pipelineconfigs/{pipelinename}
+      name: applications-application-pipelineconfigs-pipelinename
+      description: REST surface for applications-application-pipelineConfigs-pipelineName.
+      operations:
+      - method: POST
+        name: invokepipelineconfig
+        description: Invoke Pipeline By Name
+        call: gate-pipelines.invokepipelineconfig
+        with:
+          application: rest.application
+          pipelineName: rest.pipelineName
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{application}/pipelines
+      name: applications-application-pipelines
+      description: REST surface for applications-application-pipelines.
+      operations:
+      - method: GET
+        name: listpipelineexecutions
+        description: List Pipeline Executions
+        call: gate-pipelines.listpipelineexecutions
+        with:
+          application: rest.application
+          limit: rest.limit
+          pipelineName: rest.pipelineName
+          statuses: rest.statuses
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/pipelines
+      name: pipelines
+      description: REST surface for pipelines.
+      operations:
+      - method: POST
+        name: savepipeline
+        description: Save Pipeline Definition
+        call: gate-pipelines.savepipeline
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/pipelines/{id}
+      name: pipelines-id
+      description: REST surface for pipelines-id.
+      operations:
+      - method: GET
+        name: getpipelineexecution
+        description: Get Pipeline Execution
+        call: gate-pipelines.getpipelineexecution
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletepipeline
+        description: Delete Pipeline Execution
+        call: gate-pipelines.deletepipeline
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/pipelines/{id}/cancel
+      name: pipelines-id-cancel
+      description: REST surface for pipelines-id-cancel.
+      operations:
+      - method: PUT
+        name: cancelpipelineexecution
+        description: Cancel Pipeline Execution
+        call: gate-pipelines.cancelpipelineexecution
+        with:
+          id: rest.id
+          reason: rest.reason
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/pipelines/{id}/pause
+      name: pipelines-id-pause
+      description: REST surface for pipelines-id-pause.
+      operations:
+      - method: PUT
+        name: pausepipelineexecution
+        description: Pause Pipeline Execution
+        call: gate-pipelines.pausepipelineexecution
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/pipelines/{id}/resume
+      name: pipelines-id-resume
+      description: REST surface for pipelines-id-resume.
+      operations:
+      - method: PUT
+        name: resumepipelineexecution
+        description: Resume Pipeline Execution
+        call: gate-pipelines.resumepipelineexecution
+        with:
+          id: rest.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: gate-pipelines-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Spinnaker Gate API — Pipelines. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-pipeline-configurations
+      description: List Pipeline Configurations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-pipelines.listpipelineconfigs
+      with:
+        application: tools.application
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: invoke-pipeline-name
+      description: Invoke Pipeline By Name
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: gate-pipelines.invokepipelineconfig
+      with:
+        application: tools.application
+        pipelineName: tools.pipelineName
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-pipeline-executions
+      description: List Pipeline Executions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-pipelines.listpipelineexecutions
+      with:
+        application: tools.application
+        limit: tools.limit
+        pipelineName: tools.pipelineName
+        statuses: tools.statuses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: save-pipeline-definition
+      description: Save Pipeline Definition
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: gate-pipelines.savepipeline
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-pipeline-execution
+      description: Get Pipeline Execution
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-pipelines.getpipelineexecution
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-pipeline-execution
+      description: Delete Pipeline Execution
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: gate-pipelines.deletepipeline
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-pipeline-execution
+      description: Cancel Pipeline Execution
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: gate-pipelines.cancelpipelineexecution
+      with:
+        id: tools.id
+        reason: tools.reason
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: pause-pipeline-execution
+      description: Pause Pipeline Execution
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: gate-pipelines.pausepipelineexecution
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: resume-pipeline-execution
+      description: Resume Pipeline Execution
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: gate-pipelines.resumepipelineexecution
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.

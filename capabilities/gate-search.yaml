@@ -1,0 +1,92 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Spinnaker Gate API — Search
+  description: 'Spinnaker Gate API — Search. 1 operations. Lead operation: Search Spinnaker Resources. Self-contained Naftiko
+    capability covering one Spinnaker business surface.'
+  tags:
+  - Spinnaker
+  - Search
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    SPINNAKER_API_KEY: SPINNAKER_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: gate-search
+    baseUri: http://localhost:8084
+    description: Spinnaker Gate API — Search business capability. Self-contained, no shared references.
+    resources:
+    - name: search
+      path: /search
+      operations:
+      - name: search
+        method: GET
+        description: Search Spinnaker Resources
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: q
+          in: query
+          type: string
+          description: Search query string
+          required: true
+        - name: type
+          in: query
+          type: string
+          description: Resource type to limit search to
+        - name: pageSize
+          in: query
+          type: integer
+          description: Maximum results to return
+    authentication:
+      type: bearer
+      token: '{{env.SPINNAKER_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: gate-search-rest
+    port: 8080
+    description: REST adapter for Spinnaker Gate API — Search. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/search
+      name: search
+      description: REST surface for search.
+      operations:
+      - method: GET
+        name: search
+        description: Search Spinnaker Resources
+        call: gate-search.search
+        with:
+          q: rest.q
+          type: rest.type
+          pageSize: rest.pageSize
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: gate-search-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Spinnaker Gate API — Search. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: search-spinnaker-resources
+      description: Search Spinnaker Resources
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gate-search.search
+      with:
+        q: tools.q
+        type: tools.type
+        pageSize: tools.pageSize
+      outputParameters:
+      - type: object
+        mapping: $.
