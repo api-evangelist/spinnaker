@@ -1,0 +1,615 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Filter applications by cloud account"
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Filter applications by owner email"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all Spinnaker applications. Each application is a logical grouping of cloud resources including server groups, load balancers, and security groups, organized for management and deployment across one or more cloud accounts."
+        },
+        {
+          "info": {
+            "name": "Get Application Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ]
+          },
+          "docs": "Retrieves the full details of a specific Spinnaker application including configuration attributes, cloud accounts, enabled features, and associated pipeline configurations."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Pipelines",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Pipeline Configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/pipelineConfigs",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ]
+          },
+          "docs": "Retrieves all pipeline configurations associated with a Spinnaker application. Pipeline configs define the stages, triggers, parameters, and notifications for deployment workflows."
+        },
+        {
+          "info": {
+            "name": "Invoke Pipeline By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:8084/applications/:application/pipelineConfigs/:pipelineName",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "pipelineName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the pipeline configuration to invoke"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Triggers a pipeline execution for the named pipeline configuration in the specified application. Accepts optional parameters to pass to the pipeline run."
+        },
+        {
+          "info": {
+            "name": "List Pipeline Executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/pipelines",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of executions to return"
+              },
+              {
+                "name": "pipelineName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by pipeline name"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter by execution status (comma-separated)"
+              }
+            ]
+          },
+          "docs": "Retrieves the execution history for all pipelines in a Spinnaker application. Returns recent pipeline runs with their status, stages, and completion details."
+        },
+        {
+          "info": {
+            "name": "Save Pipeline Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:8084/pipelines",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a pipeline configuration. If the pipeline has an existing ID it is updated; otherwise a new pipeline configuration is created for the specified application."
+        },
+        {
+          "info": {
+            "name": "Get Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/pipelines/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Retrieves the full details of a specific pipeline execution by its ID, including all stages, their current status, outputs, and any error messages."
+        },
+        {
+          "info": {
+            "name": "Delete Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:8084/pipelines/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Deletes a pipeline execution record from Spinnaker history."
+        },
+        {
+          "info": {
+            "name": "Cancel Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:8084/pipelines/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              },
+              {
+                "name": "reason",
+                "value": "",
+                "type": "query",
+                "description": "Reason for cancellation"
+              }
+            ]
+          },
+          "docs": "Cancels a running pipeline execution. The cancellation is propagated to all running stages and the pipeline is marked as CANCELED."
+        },
+        {
+          "info": {
+            "name": "Pause Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:8084/pipelines/:id/pause",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Pauses a running pipeline execution. The pipeline can be resumed by calling the resume endpoint."
+        },
+        {
+          "info": {
+            "name": "Resume Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:8084/pipelines/:id/resume",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Resumes a paused pipeline execution from where it was paused."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Application Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/tasks",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of tasks per page"
+              }
+            ]
+          },
+          "docs": "Retrieves the task history for a Spinnaker application. Tasks represent individual operations such as deployments, resizes, or rollbacks."
+        },
+        {
+          "info": {
+            "name": "Create Application Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:8084/applications/:application/tasks",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and executes a new Spinnaker task for the specified application. Tasks can represent operations like deploying a server group, resizing a cluster, or modifying load balancer rules."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Clusters",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Application Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/clusters",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ]
+          },
+          "docs": "Retrieves all clusters for a Spinnaker application across all configured cloud accounts. Clusters are logical groupings of server groups (e.g., autoscaling groups, replica sets) that represent a single deployment target."
+        },
+        {
+          "info": {
+            "name": "List Cluster Server Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/clusters/:account/:clusterName/serverGroups",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "The cloud account name"
+              },
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The cluster name"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of server groups for a specific cluster in a given cloud account. Server groups represent the underlying infrastructure (ASGs, Kubernetes ReplicaSets, etc.) that Spinnaker manages."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Load Balancers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Application Load Balancers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/loadBalancers",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Cloud provider to filter by"
+              }
+            ]
+          },
+          "docs": "Retrieves all load balancers associated with a Spinnaker application across configured cloud accounts and regions."
+        },
+        {
+          "info": {
+            "name": "List All Load Balancers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/loadBalancers",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Cloud provider name"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all load balancers for a given cloud provider across all managed accounts and regions."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find Cloud Images",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/images/find",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Cloud provider to search"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Cloud account to search within"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud region to search within"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query string for image name filtering"
+              }
+            ]
+          },
+          "docs": "Searches for available cloud images (AMIs, GCE images, etc.) filtered by cloud provider, region, account, and other attributes. Used to select deployment images for pipeline stages."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Spinnaker Resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query string"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Resource type to limit search to"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Maximum results to return"
+              }
+            ]
+          },
+          "docs": "Performs a full-text search across all Spinnaker-managed resources including applications, server groups, instances, load balancers, and security groups."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Spinnaker Projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/projects"
+          },
+          "docs": "Retrieves all Spinnaker projects. Projects group multiple applications and pipelines into organizational units for team-based access and dashboard views."
+        },
+        {
+          "info": {
+            "name": "Get Spinnaker Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/projects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The project ID"
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific Spinnaker project including its member applications, cluster configuration, and pipeline summary."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Build Services",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Build Masters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/v2/builds"
+          },
+          "docs": "Retrieves all connected CI build masters (Jenkins, Travis CI, Google Cloud Build, etc.) that are configured as Spinnaker build services."
+        },
+        {
+          "info": {
+            "name": "List Build Master Jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/v2/builds/:buildMaster/jobs",
+            "params": [
+              {
+                "name": "buildMaster",
+                "value": "",
+                "type": "path",
+                "description": "The build master name"
+              }
+            ]
+          },
+          "docs": "Retrieves all available CI jobs from a connected build master. Jobs can be used as pipeline triggers or artifact sources."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
