@@ -6,7 +6,7 @@ description: >-
   GCP, Azure, Kubernetes, and other cloud providers. The Gate API is the primary REST interface for all Spinnaker
   operations.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Continuous Delivery
   - Containers
