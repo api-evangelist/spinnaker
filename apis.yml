@@ -44,6 +44,10 @@ apis:
       - type: SpectralRules
         url: rules/spinnaker-rules.yml
 common:
+  - type: Authentication
+    url: authentication/spinnaker-authentication.yml
+  - type: OAuthScopes
+    url: scopes/spinnaker-scopes.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/spinnaker-cd
   - type: Website

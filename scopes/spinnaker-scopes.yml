@@ -1,0 +1,30 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/spinnaker-gate-openapi.yml
+schemes:
+- name: oauth2
+  source: openapi/spinnaker-gate-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://accounts.example.com/oauth/authorize
+    tokenUrl: https://accounts.example.com/oauth/token
+  description: OAuth 2.0 authentication for Spinnaker Gate
+scopes:
+- scope: email
+  description: User email access
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/spinnaker-gate-openapi.yml
+- scope: openid
+  description: OpenID Connect scope
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/spinnaker-gate-openapi.yml
+- scope: profile
+  description: User profile access
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/spinnaker-gate-openapi.yml
