@@ -44,6 +44,8 @@ apis:
       - type: SpectralRules
         url: rules/spinnaker-rules.yml
 common:
+  - type: DomainSecurity
+    url: security/spinnaker-domain-security.yml
   - type: Authentication
     url: authentication/spinnaker-authentication.yml
   - type: OAuthScopes
