@@ -1,0 +1,158 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Clusters API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Clusters
+  description: Cloud cluster and server group operations for managing deployment targets across cloud providers
+paths:
+  /applications/{application}/clusters:
+    get:
+      operationId: listApplicationClusters
+      summary: List Application Clusters
+      description: Retrieves all clusters for a Spinnaker application across all configured cloud accounts. Clusters are logical groupings of server groups (e.g., autoscaling groups, replica sets) that represent a single deployment target.
+      tags:
+      - Clusters
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Clusters retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Cluster'
+  /applications/{application}/clusters/{account}/{clusterName}/serverGroups:
+    get:
+      operationId: listClusterServerGroups
+      summary: List Cluster Server Groups
+      description: Retrieves a list of server groups for a specific cluster in a given cloud account. Server groups represent the underlying infrastructure (ASGs, Kubernetes ReplicaSets, etc.) that Spinnaker manages.
+      tags:
+      - Clusters
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      - name: account
+        in: path
+        required: true
+        description: The cloud account name
+        schema:
+          type: string
+      - name: clusterName
+        in: path
+        required: true
+        description: The cluster name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Server groups retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerGroup'
+components:
+  schemas:
+    Cluster:
+      type: object
+      description: A Spinnaker cluster grouping server groups
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        account:
+          type: string
+          description: Cloud account name
+        serverGroups:
+          type: array
+          description: Server groups in this cluster
+          items:
+            $ref: '#/components/schemas/ServerGroup'
+    ServerGroup:
+      type: object
+      description: A cloud server group (ASG, ReplicaSet, etc.)
+      properties:
+        name:
+          type: string
+          description: Server group name
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        instances:
+          type: array
+          description: Instances in this server group
+          items:
+            type: object
+            additionalProperties: true
+        instanceCounts:
+          type: object
+          description: Count of instances by status
+          properties:
+            total:
+              type: integer
+            up:
+              type: integer
+            down:
+              type: integer
+        capacity:
+          type: object
+          description: Server group capacity settings
+          properties:
+            min:
+              type: integer
+            max:
+              type: integer
+            desired:
+              type: integer
+        disabled:
+          type: boolean
+          description: Whether the server group is disabled
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

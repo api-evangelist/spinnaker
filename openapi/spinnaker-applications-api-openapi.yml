@@ -1,0 +1,131 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Applications
+  description: Application management operations for Spinnaker application lifecycle including creation, retrieval, and pipeline access
+paths:
+  /applications:
+    get:
+      operationId: listApplications
+      summary: List All Applications
+      description: Retrieves a list of all Spinnaker applications. Each application is a logical grouping of cloud resources including server groups, load balancers, and security groups, organized for management and deployment across one or more cloud accounts.
+      tags:
+      - Applications
+      parameters:
+      - name: account
+        in: query
+        description: Filter applications by cloud account
+        schema:
+          type: string
+      - name: owner
+        in: query
+        description: Filter applications by owner email
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of applications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+  /applications/{application}:
+    get:
+      operationId: getApplication
+      summary: Get Application Details
+      description: Retrieves the full details of a specific Spinnaker application including configuration attributes, cloud accounts, enabled features, and associated pipeline configurations.
+      tags:
+      - Applications
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Application details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationDetail'
+        '404':
+          description: Application not found
+components:
+  schemas:
+    Application:
+      type: object
+      description: A Spinnaker application grouping cloud resources
+      properties:
+        name:
+          type: string
+          description: Application name (unique identifier)
+        description:
+          type: string
+          description: Human-readable application description
+        email:
+          type: string
+          description: Application owner email address
+        accounts:
+          type: string
+          description: Comma-separated list of cloud accounts the application uses
+        cloudProviders:
+          type: string
+          description: Comma-separated list of cloud providers
+        updated:
+          type: integer
+          description: Last updated timestamp in milliseconds
+    ApplicationDetail:
+      type: object
+      description: Full application details including attributes and configuration
+      properties:
+        name:
+          type: object
+          description: Application name and metadata
+        attributes:
+          $ref: '#/components/schemas/Application'
+        clusters:
+          type: object
+          description: Cluster map by account
+        instances:
+          type: object
+          description: Instance map
+        loadBalancers:
+          type: object
+          description: Load balancer map
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

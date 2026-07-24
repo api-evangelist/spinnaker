@@ -1,0 +1,121 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Load Balancers API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Load Balancers
+  description: Load balancer management operations for cloud load balancing resources across supported cloud providers
+paths:
+  /applications/{application}/loadBalancers:
+    get:
+      operationId: listApplicationLoadBalancers
+      summary: List Application Load Balancers
+      description: Retrieves all load balancers associated with a Spinnaker application across configured cloud accounts and regions.
+      tags:
+      - Load Balancers
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      - name: provider
+        in: query
+        description: Cloud provider to filter by
+        schema:
+          type: string
+          enum:
+          - aws
+          - gce
+          - azure
+          - kubernetes
+      responses:
+        '200':
+          description: Load balancers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoadBalancer'
+  /loadBalancers:
+    get:
+      operationId: listLoadBalancers
+      summary: List All Load Balancers
+      description: Retrieves a list of all load balancers for a given cloud provider across all managed accounts and regions.
+      tags:
+      - Load Balancers
+      parameters:
+      - name: provider
+        in: query
+        description: Cloud provider name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Load balancers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoadBalancer'
+components:
+  schemas:
+    LoadBalancer:
+      type: object
+      description: A cloud load balancer managed by Spinnaker
+      properties:
+        name:
+          type: string
+          description: Load balancer name
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        type:
+          type: string
+          description: Cloud provider type
+        dnsName:
+          type: string
+          description: DNS hostname for the load balancer
+        serverGroups:
+          type: array
+          description: Server groups attached to this load balancer
+          items:
+            type: object
+            additionalProperties: true
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

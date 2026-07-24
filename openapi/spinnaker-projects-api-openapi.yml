@@ -1,0 +1,108 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Projects API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Projects
+  description: Spinnaker project management for grouping applications and pipelines into organizational units
+paths:
+  /projects:
+    get:
+      operationId: listProjects
+      summary: List Spinnaker Projects
+      description: Retrieves all Spinnaker projects. Projects group multiple applications and pipelines into organizational units for team-based access and dashboard views.
+      tags:
+      - Projects
+      responses:
+        '200':
+          description: Projects retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+  /projects/{id}:
+    get:
+      operationId: getProject
+      summary: Get Spinnaker Project
+      description: Retrieves details of a specific Spinnaker project including its member applications, cluster configuration, and pipeline summary.
+      tags:
+      - Projects
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The project ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Project details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Project not found
+components:
+  schemas:
+    Project:
+      type: object
+      description: A Spinnaker project grouping applications
+      properties:
+        id:
+          type: string
+          description: Unique project ID
+        name:
+          type: string
+          description: Project name
+        email:
+          type: string
+          description: Project owner email
+        config:
+          type: object
+          description: Project configuration
+          properties:
+            applications:
+              type: array
+              items:
+                type: string
+              description: List of application names in this project
+            clusters:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+              description: Cluster configuration for the project
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

@@ -1,0 +1,160 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Tasks API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Tasks
+  description: Task management for tracking long-running Spinnaker operations and checking their completion status
+paths:
+  /applications/{application}/tasks:
+    get:
+      operationId: listApplicationTasks
+      summary: List Application Tasks
+      description: Retrieves the task history for a Spinnaker application. Tasks represent individual operations such as deployments, resizes, or rollbacks.
+      tags:
+      - Tasks
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page number for pagination
+        schema:
+          type: integer
+          default: 0
+      - name: pageSize
+        in: query
+        description: Number of tasks per page
+        schema:
+          type: integer
+          default: 10
+      responses:
+        '200':
+          description: Task list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+    post:
+      operationId: createApplicationTask
+      summary: Create Application Task
+      description: Creates and executes a new Spinnaker task for the specified application. Tasks can represent operations like deploying a server group, resizing a cluster, or modifying load balancer rules.
+      tags:
+      - Tasks
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+      responses:
+        '200':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRef'
+components:
+  schemas:
+    TaskRef:
+      type: object
+      description: Reference to a created or invoked task
+      properties:
+        ref:
+          type: string
+          description: Task reference URL path
+    TaskCreate:
+      type: object
+      required:
+      - application
+      - description
+      - job
+      properties:
+        application:
+          type: string
+          description: Application name
+        description:
+          type: string
+          description: Task description
+        job:
+          type: array
+          description: List of task job operations
+          items:
+            type: object
+            additionalProperties: true
+    Task:
+      type: object
+      description: A Spinnaker task representing a discrete operation
+      properties:
+        id:
+          type: string
+          description: Unique task ID
+        name:
+          type: string
+          description: Task name
+        status:
+          type: string
+          description: Current task status
+          enum:
+          - NOT_STARTED
+          - RUNNING
+          - SUCCEEDED
+          - TERMINAL
+          - FAILED_CONTINUE
+          - CANCELED
+        startTime:
+          type: integer
+          description: Task start time in milliseconds
+        endTime:
+          type: integer
+          description: Task end time in milliseconds
+        resultObjects:
+          type: array
+          description: Task result data
+          items:
+            type: object
+            additionalProperties: true
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

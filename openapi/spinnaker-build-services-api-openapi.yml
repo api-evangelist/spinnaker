@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Build Services API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Build Services
+  description: CI build service integration for discovering build masters, jobs, and build artifacts
+paths:
+  /v2/builds:
+    get:
+      operationId: listBuildMasters
+      summary: List Build Masters
+      description: Retrieves all connected CI build masters (Jenkins, Travis CI, Google Cloud Build, etc.) that are configured as Spinnaker build services.
+      tags:
+      - Build Services
+      responses:
+        '200':
+          description: Build masters retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: Build master name
+  /v2/builds/{buildMaster}/jobs:
+    get:
+      operationId: listBuildJobs
+      summary: List Build Master Jobs
+      description: Retrieves all available CI jobs from a connected build master. Jobs can be used as pipeline triggers or artifact sources.
+      tags:
+      - Build Services
+      parameters:
+      - name: buildMaster
+        in: path
+        required: true
+        description: The build master name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Build jobs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: Job name
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

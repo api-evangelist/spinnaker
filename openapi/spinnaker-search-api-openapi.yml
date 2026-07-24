@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Search API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Search
+  description: Cross-entity search for finding applications, clusters, and other Spinnaker-managed resources
+paths:
+  /search:
+    get:
+      operationId: search
+      summary: Search Spinnaker Resources
+      description: Performs a full-text search across all Spinnaker-managed resources including applications, server groups, instances, load balancers, and security groups.
+      tags:
+      - Search
+      parameters:
+      - name: q
+        in: query
+        required: true
+        description: Search query string
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Resource type to limit search to
+        schema:
+          type: string
+          enum:
+          - applications
+          - serverGroups
+          - instances
+          - loadBalancers
+          - securityGroups
+      - name: pageSize
+        in: query
+        description: Maximum results to return
+        schema:
+          type: integer
+          default: 10
+      responses:
+        '200':
+          description: Search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+components:
+  schemas:
+    SearchResult:
+      type: object
+      description: A search result entry
+      properties:
+        type:
+          type: string
+          description: Resource type
+        url:
+          type: string
+          description: Resource URL path
+        displayName:
+          type: string
+          description: Human-readable display name
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        application:
+          type: string
+          description: Associated application name
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

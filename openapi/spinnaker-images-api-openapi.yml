@@ -1,0 +1,102 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Images API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Images
+  description: Cloud image discovery and management across cloud providers and regions
+paths:
+  /images/find:
+    get:
+      operationId: findImages
+      summary: Find Cloud Images
+      description: Searches for available cloud images (AMIs, GCE images, etc.) filtered by cloud provider, region, account, and other attributes. Used to select deployment images for pipeline stages.
+      tags:
+      - Images
+      parameters:
+      - name: provider
+        in: query
+        description: Cloud provider to search
+        schema:
+          type: string
+      - name: account
+        in: query
+        description: Cloud account to search within
+        schema:
+          type: string
+      - name: region
+        in: query
+        description: Cloud region to search within
+        schema:
+          type: string
+      - name: q
+        in: query
+        description: Search query string for image name filtering
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Images retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+components:
+  schemas:
+    Image:
+      type: object
+      description: A cloud machine image
+      properties:
+        imageName:
+          type: string
+          description: Image name
+        imageId:
+          type: string
+          description: Cloud provider image ID
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        provider:
+          type: string
+          description: Cloud provider
+        tags:
+          type: object
+          description: Image tags
+          additionalProperties:
+            type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/

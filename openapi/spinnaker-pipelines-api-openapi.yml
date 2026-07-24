@@ -1,0 +1,384 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate Applications Pipelines API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: http://localhost:8084
+  description: Spinnaker Gate API (default local port 8084)
+security:
+- oauth2:
+  - openid
+tags:
+- name: Pipelines
+  description: Pipeline definition and execution management including saving pipeline configurations, triggering runs, and controlling execution state
+paths:
+  /applications/{application}/pipelineConfigs:
+    get:
+      operationId: listPipelineConfigs
+      summary: List Pipeline Configurations
+      description: Retrieves all pipeline configurations associated with a Spinnaker application. Pipeline configs define the stages, triggers, parameters, and notifications for deployment workflows.
+      tags:
+      - Pipelines
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pipeline configurations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineConfig'
+  /applications/{application}/pipelineConfigs/{pipelineName}:
+    post:
+      operationId: invokePipelineConfig
+      summary: Invoke Pipeline By Name
+      description: Triggers a pipeline execution for the named pipeline configuration in the specified application. Accepts optional parameters to pass to the pipeline run.
+      tags:
+      - Pipelines
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      - name: pipelineName
+        in: path
+        required: true
+        description: The name of the pipeline configuration to invoke
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  additionalProperties: true
+                  description: Key-value parameters to pass to the pipeline
+      responses:
+        '200':
+          description: Pipeline invoked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRef'
+  /applications/{application}/pipelines:
+    get:
+      operationId: listPipelineExecutions
+      summary: List Pipeline Executions
+      description: Retrieves the execution history for all pipelines in a Spinnaker application. Returns recent pipeline runs with their status, stages, and completion details.
+      tags:
+      - Pipelines
+      parameters:
+      - name: application
+        in: path
+        required: true
+        description: The Spinnaker application name
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Maximum number of executions to return
+        schema:
+          type: integer
+          default: 10
+      - name: pipelineName
+        in: query
+        description: Filter by pipeline name
+        schema:
+          type: string
+      - name: statuses
+        in: query
+        description: Filter by execution status (comma-separated)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pipeline executions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineExecution'
+  /pipelines:
+    post:
+      operationId: savePipeline
+      summary: Save Pipeline Definition
+      description: Creates or updates a pipeline configuration. If the pipeline has an existing ID it is updated; otherwise a new pipeline configuration is created for the specified application.
+      tags:
+      - Pipelines
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineConfig'
+      responses:
+        '200':
+          description: Pipeline saved successfully
+  /pipelines/{id}:
+    get:
+      operationId: getPipelineExecution
+      summary: Get Pipeline Execution
+      description: Retrieves the full details of a specific pipeline execution by its ID, including all stages, their current status, outputs, and any error messages.
+      tags:
+      - Pipelines
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The pipeline execution ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pipeline execution retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineExecution'
+        '404':
+          description: Pipeline execution not found
+    delete:
+      operationId: deletePipeline
+      summary: Delete Pipeline Execution
+      description: Deletes a pipeline execution record from Spinnaker history.
+      tags:
+      - Pipelines
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The pipeline execution ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pipeline execution deleted successfully
+  /pipelines/{id}/cancel:
+    put:
+      operationId: cancelPipelineExecution
+      summary: Cancel Pipeline Execution
+      description: Cancels a running pipeline execution. The cancellation is propagated to all running stages and the pipeline is marked as CANCELED.
+      tags:
+      - Pipelines
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The pipeline execution ID
+        schema:
+          type: string
+      - name: reason
+        in: query
+        description: Reason for cancellation
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pipeline execution canceled successfully
+  /pipelines/{id}/pause:
+    put:
+      operationId: pausePipelineExecution
+      summary: Pause Pipeline Execution
+      description: Pauses a running pipeline execution. The pipeline can be resumed by calling the resume endpoint.
+      tags:
+      - Pipelines
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The pipeline execution ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pipeline execution paused successfully
+  /pipelines/{id}/resume:
+    put:
+      operationId: resumePipelineExecution
+      summary: Resume Pipeline Execution
+      description: Resumes a paused pipeline execution from where it was paused.
+      tags:
+      - Pipelines
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The pipeline execution ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pipeline execution resumed successfully
+components:
+  schemas:
+    TaskRef:
+      type: object
+      description: Reference to a created or invoked task
+      properties:
+        ref:
+          type: string
+          description: Task reference URL path
+    PipelineExecution:
+      type: object
+      description: A pipeline execution instance
+      properties:
+        id:
+          type: string
+          description: Unique execution ID
+        application:
+          type: string
+          description: Application name
+        name:
+          type: string
+          description: Pipeline name
+        status:
+          type: string
+          description: Current execution status
+          enum:
+          - NOT_STARTED
+          - RUNNING
+          - PAUSED
+          - SUSPENDED
+          - SUCCEEDED
+          - FAILED_CONTINUE
+          - TERMINAL
+          - CANCELED
+          - REDIRECT
+          - STOPPED
+          - SKIPPED
+          - BUFFERED
+        startTime:
+          type: integer
+          description: Execution start time in milliseconds
+        endTime:
+          type: integer
+          description: Execution end time in milliseconds
+        stages:
+          type: array
+          description: List of stage executions
+          items:
+            $ref: '#/components/schemas/StageExecution'
+        trigger:
+          type: object
+          description: Trigger that initiated this execution
+          additionalProperties: true
+    PipelineConfig:
+      type: object
+      description: A Spinnaker pipeline configuration definition
+      properties:
+        id:
+          type: string
+          description: Unique pipeline configuration ID
+        name:
+          type: string
+          description: Pipeline name
+        application:
+          type: string
+          description: Application this pipeline belongs to
+        description:
+          type: string
+          description: Pipeline description
+        stages:
+          type: array
+          description: Ordered list of pipeline stages
+          items:
+            type: object
+            additionalProperties: true
+        triggers:
+          type: array
+          description: Pipeline trigger configurations
+          items:
+            type: object
+            additionalProperties: true
+        parameters:
+          type: array
+          description: Pipeline parameter definitions
+          items:
+            type: object
+            additionalProperties: true
+        notifications:
+          type: array
+          description: Pipeline notification configurations
+          items:
+            type: object
+            additionalProperties: true
+        lastModifiedBy:
+          type: string
+          description: User who last modified the pipeline
+        updateTs:
+          type: string
+          description: Timestamp of last modification
+    StageExecution:
+      type: object
+      description: A single stage within a pipeline execution
+      properties:
+        id:
+          type: string
+          description: Unique stage execution ID
+        name:
+          type: string
+          description: Stage name
+        type:
+          type: string
+          description: Stage type (e.g., deploy, wait, manualJudgment)
+        status:
+          type: string
+          description: Stage status
+          enum:
+          - NOT_STARTED
+          - RUNNING
+          - PAUSED
+          - SUCCEEDED
+          - FAILED_CONTINUE
+          - TERMINAL
+          - CANCELED
+          - SKIPPED
+        startTime:
+          type: integer
+          description: Stage start time in milliseconds
+        endTime:
+          type: integer
+          description: Stage end time in milliseconds
+        context:
+          type: object
+          description: Stage context data
+          additionalProperties: true
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/
