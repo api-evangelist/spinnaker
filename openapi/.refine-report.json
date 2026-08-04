@@ -1,0 +1,30 @@
+{
+  "provider": "spinnaker",
+  "sources": [
+    "spinnaker-applications-api-openapi.yml",
+    "spinnaker-build-services-api-openapi.yml",
+    "spinnaker-clusters-api-openapi.yml",
+    "spinnaker-images-api-openapi.yml",
+    "spinnaker-load-balancers-api-openapi.yml",
+    "spinnaker-pipelines-api-openapi.yml",
+    "spinnaker-projects-api-openapi.yml",
+    "spinnaker-search-api-openapi.yml",
+    "spinnaker-tasks-api-openapi.yml"
+  ],
+  "outputs": [
+    "spinnaker-applications-api-openapi.yml",
+    "spinnaker-build-services-api-openapi.yml",
+    "spinnaker-clusters-api-openapi.yml",
+    "spinnaker-images-api-openapi.yml",
+    "spinnaker-load-balancers-api-openapi.yml",
+    "spinnaker-pipelines-api-openapi.yml",
+    "spinnaker-projects-api-openapi.yml",
+    "spinnaker-search-api-openapi.yml",
+    "spinnaker-tasks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

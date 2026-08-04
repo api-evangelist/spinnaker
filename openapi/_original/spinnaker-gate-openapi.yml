@@ -1,0 +1,1085 @@
+openapi: 3.1.0
+info:
+  title: Spinnaker Gate API
+  description: >-
+    Gate is the API gateway for the Spinnaker continuous delivery platform, serving
+    as the primary interface through which the Spinnaker UI (Deck) and external
+    API clients communicate with Spinnaker's microservices. Gate provides a unified
+    REST API for managing applications, pipelines, deployments, server groups, load
+    balancers, and cloud infrastructure across multiple cloud providers including
+    AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP,
+    and X.509 certificate authentication.
+  version: '1.0'
+  contact:
+    name: Spinnaker Community
+    url: https://spinnaker.io/community/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+externalDocs:
+  description: Spinnaker API Reference
+  url: https://spinnaker.io/docs/reference/api/
+servers:
+  - url: http://localhost:8084
+    description: Spinnaker Gate API (default local port 8084)
+tags:
+  - name: Applications
+    description: >-
+      Application management operations for Spinnaker application lifecycle
+      including creation, retrieval, and pipeline access
+  - name: Pipelines
+    description: >-
+      Pipeline definition and execution management including saving pipeline
+      configurations, triggering runs, and controlling execution state
+  - name: Clusters
+    description: >-
+      Cloud cluster and server group operations for managing deployment
+      targets across cloud providers
+  - name: Load Balancers
+    description: >-
+      Load balancer management operations for cloud load balancing resources
+      across supported cloud providers
+  - name: Server Groups
+    description: >-
+      Server group operations for managing autoscaling groups, replica sets,
+      and deployment groups
+  - name: Tasks
+    description: >-
+      Task management for tracking long-running Spinnaker operations and
+      checking their completion status
+  - name: Security Groups
+    description: >-
+      Security group management for cloud firewall and network access control
+      resources
+  - name: Images
+    description: >-
+      Cloud image discovery and management across cloud providers and regions
+  - name: Search
+    description: >-
+      Cross-entity search for finding applications, clusters, and other
+      Spinnaker-managed resources
+  - name: Projects
+    description: >-
+      Spinnaker project management for grouping applications and pipelines
+      into organizational units
+  - name: Build Services
+    description: >-
+      CI build service integration for discovering build masters, jobs,
+      and build artifacts
+paths:
+  /applications:
+    get:
+      operationId: listApplications
+      summary: List All Applications
+      description: >-
+        Retrieves a list of all Spinnaker applications. Each application is a
+        logical grouping of cloud resources including server groups, load
+        balancers, and security groups, organized for management and deployment
+        across one or more cloud accounts.
+      tags:
+        - Applications
+      parameters:
+        - name: account
+          in: query
+          description: Filter applications by cloud account
+          schema:
+            type: string
+        - name: owner
+          in: query
+          description: Filter applications by owner email
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of applications retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+  /applications/{application}:
+    get:
+      operationId: getApplication
+      summary: Get Application Details
+      description: >-
+        Retrieves the full details of a specific Spinnaker application including
+        configuration attributes, cloud accounts, enabled features, and
+        associated pipeline configurations.
+      tags:
+        - Applications
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Application details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationDetail'
+        '404':
+          description: Application not found
+  /applications/{application}/pipelineConfigs:
+    get:
+      operationId: listPipelineConfigs
+      summary: List Pipeline Configurations
+      description: >-
+        Retrieves all pipeline configurations associated with a Spinnaker
+        application. Pipeline configs define the stages, triggers, parameters,
+        and notifications for deployment workflows.
+      tags:
+        - Pipelines
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline configurations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineConfig'
+  /applications/{application}/pipelineConfigs/{pipelineName}:
+    post:
+      operationId: invokePipelineConfig
+      summary: Invoke Pipeline By Name
+      description: >-
+        Triggers a pipeline execution for the named pipeline configuration
+        in the specified application. Accepts optional parameters to pass
+        to the pipeline run.
+      tags:
+        - Pipelines
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+        - name: pipelineName
+          in: path
+          required: true
+          description: The name of the pipeline configuration to invoke
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  additionalProperties: true
+                  description: Key-value parameters to pass to the pipeline
+      responses:
+        '200':
+          description: Pipeline invoked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRef'
+  /applications/{application}/pipelines:
+    get:
+      operationId: listPipelineExecutions
+      summary: List Pipeline Executions
+      description: >-
+        Retrieves the execution history for all pipelines in a Spinnaker
+        application. Returns recent pipeline runs with their status, stages,
+        and completion details.
+      tags:
+        - Pipelines
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of executions to return
+          schema:
+            type: integer
+            default: 10
+        - name: pipelineName
+          in: query
+          description: Filter by pipeline name
+          schema:
+            type: string
+        - name: statuses
+          in: query
+          description: Filter by execution status (comma-separated)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline executions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PipelineExecution'
+  /applications/{application}/tasks:
+    get:
+      operationId: listApplicationTasks
+      summary: List Application Tasks
+      description: >-
+        Retrieves the task history for a Spinnaker application. Tasks represent
+        individual operations such as deployments, resizes, or rollbacks.
+      tags:
+        - Tasks
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            default: 0
+        - name: pageSize
+          in: query
+          description: Number of tasks per page
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Task list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+    post:
+      operationId: createApplicationTask
+      summary: Create Application Task
+      description: >-
+        Creates and executes a new Spinnaker task for the specified application.
+        Tasks can represent operations like deploying a server group, resizing
+        a cluster, or modifying load balancer rules.
+      tags:
+        - Tasks
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+      responses:
+        '200':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskRef'
+  /applications/{application}/clusters:
+    get:
+      operationId: listApplicationClusters
+      summary: List Application Clusters
+      description: >-
+        Retrieves all clusters for a Spinnaker application across all configured
+        cloud accounts. Clusters are logical groupings of server groups (e.g.,
+        autoscaling groups, replica sets) that represent a single deployment target.
+      tags:
+        - Clusters
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Clusters retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Cluster'
+  /applications/{application}/clusters/{account}/{clusterName}/serverGroups:
+    get:
+      operationId: listClusterServerGroups
+      summary: List Cluster Server Groups
+      description: >-
+        Retrieves a list of server groups for a specific cluster in a given cloud
+        account. Server groups represent the underlying infrastructure (ASGs,
+        Kubernetes ReplicaSets, etc.) that Spinnaker manages.
+      tags:
+        - Clusters
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+        - name: account
+          in: path
+          required: true
+          description: The cloud account name
+          schema:
+            type: string
+        - name: clusterName
+          in: path
+          required: true
+          description: The cluster name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Server groups retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerGroup'
+  /applications/{application}/loadBalancers:
+    get:
+      operationId: listApplicationLoadBalancers
+      summary: List Application Load Balancers
+      description: >-
+        Retrieves all load balancers associated with a Spinnaker application
+        across configured cloud accounts and regions.
+      tags:
+        - Load Balancers
+      parameters:
+        - name: application
+          in: path
+          required: true
+          description: The Spinnaker application name
+          schema:
+            type: string
+        - name: provider
+          in: query
+          description: Cloud provider to filter by
+          schema:
+            type: string
+            enum: [aws, gce, azure, kubernetes]
+      responses:
+        '200':
+          description: Load balancers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoadBalancer'
+  /loadBalancers:
+    get:
+      operationId: listLoadBalancers
+      summary: List All Load Balancers
+      description: >-
+        Retrieves a list of all load balancers for a given cloud provider
+        across all managed accounts and regions.
+      tags:
+        - Load Balancers
+      parameters:
+        - name: provider
+          in: query
+          description: Cloud provider name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Load balancers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoadBalancer'
+  /pipelines:
+    post:
+      operationId: savePipeline
+      summary: Save Pipeline Definition
+      description: >-
+        Creates or updates a pipeline configuration. If the pipeline has an
+        existing ID it is updated; otherwise a new pipeline configuration
+        is created for the specified application.
+      tags:
+        - Pipelines
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineConfig'
+      responses:
+        '200':
+          description: Pipeline saved successfully
+  /pipelines/{id}:
+    get:
+      operationId: getPipelineExecution
+      summary: Get Pipeline Execution
+      description: >-
+        Retrieves the full details of a specific pipeline execution by its ID,
+        including all stages, their current status, outputs, and any error
+        messages.
+      tags:
+        - Pipelines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The pipeline execution ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline execution retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineExecution'
+        '404':
+          description: Pipeline execution not found
+    delete:
+      operationId: deletePipeline
+      summary: Delete Pipeline Execution
+      description: >-
+        Deletes a pipeline execution record from Spinnaker history.
+      tags:
+        - Pipelines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The pipeline execution ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline execution deleted successfully
+  /pipelines/{id}/cancel:
+    put:
+      operationId: cancelPipelineExecution
+      summary: Cancel Pipeline Execution
+      description: >-
+        Cancels a running pipeline execution. The cancellation is propagated
+        to all running stages and the pipeline is marked as CANCELED.
+      tags:
+        - Pipelines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The pipeline execution ID
+          schema:
+            type: string
+        - name: reason
+          in: query
+          description: Reason for cancellation
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline execution canceled successfully
+  /pipelines/{id}/pause:
+    put:
+      operationId: pausePipelineExecution
+      summary: Pause Pipeline Execution
+      description: >-
+        Pauses a running pipeline execution. The pipeline can be resumed
+        by calling the resume endpoint.
+      tags:
+        - Pipelines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The pipeline execution ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline execution paused successfully
+  /pipelines/{id}/resume:
+    put:
+      operationId: resumePipelineExecution
+      summary: Resume Pipeline Execution
+      description: >-
+        Resumes a paused pipeline execution from where it was paused.
+      tags:
+        - Pipelines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The pipeline execution ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pipeline execution resumed successfully
+  /images/find:
+    get:
+      operationId: findImages
+      summary: Find Cloud Images
+      description: >-
+        Searches for available cloud images (AMIs, GCE images, etc.) filtered
+        by cloud provider, region, account, and other attributes. Used to
+        select deployment images for pipeline stages.
+      tags:
+        - Images
+      parameters:
+        - name: provider
+          in: query
+          description: Cloud provider to search
+          schema:
+            type: string
+        - name: account
+          in: query
+          description: Cloud account to search within
+          schema:
+            type: string
+        - name: region
+          in: query
+          description: Cloud region to search within
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: Search query string for image name filtering
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Images retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Image'
+  /search:
+    get:
+      operationId: search
+      summary: Search Spinnaker Resources
+      description: >-
+        Performs a full-text search across all Spinnaker-managed resources
+        including applications, server groups, instances, load balancers, and
+        security groups.
+      tags:
+        - Search
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query string
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Resource type to limit search to
+          schema:
+            type: string
+            enum: [applications, serverGroups, instances, loadBalancers, securityGroups]
+        - name: pageSize
+          in: query
+          description: Maximum results to return
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Search results retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+  /projects:
+    get:
+      operationId: listProjects
+      summary: List Spinnaker Projects
+      description: >-
+        Retrieves all Spinnaker projects. Projects group multiple applications
+        and pipelines into organizational units for team-based access and
+        dashboard views.
+      tags:
+        - Projects
+      responses:
+        '200':
+          description: Projects retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+  /projects/{id}:
+    get:
+      operationId: getProject
+      summary: Get Spinnaker Project
+      description: >-
+        Retrieves details of a specific Spinnaker project including its
+        member applications, cluster configuration, and pipeline summary.
+      tags:
+        - Projects
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The project ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Project details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Project not found
+  /v2/builds:
+    get:
+      operationId: listBuildMasters
+      summary: List Build Masters
+      description: >-
+        Retrieves all connected CI build masters (Jenkins, Travis CI, Google
+        Cloud Build, etc.) that are configured as Spinnaker build services.
+      tags:
+        - Build Services
+      responses:
+        '200':
+          description: Build masters retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: Build master name
+  /v2/builds/{buildMaster}/jobs:
+    get:
+      operationId: listBuildJobs
+      summary: List Build Master Jobs
+      description: >-
+        Retrieves all available CI jobs from a connected build master. Jobs
+        can be used as pipeline triggers or artifact sources.
+      tags:
+        - Build Services
+      parameters:
+        - name: buildMaster
+          in: path
+          required: true
+          description: The build master name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Build jobs retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: Job name
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 authentication for Spinnaker Gate
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.example.com/oauth/authorize
+          tokenUrl: https://accounts.example.com/oauth/token
+          scopes:
+            openid: OpenID Connect scope
+            profile: User profile access
+            email: User email access
+    x509:
+      type: mutualTLS
+      description: X.509 certificate-based mutual TLS authentication
+  schemas:
+    Application:
+      type: object
+      description: A Spinnaker application grouping cloud resources
+      properties:
+        name:
+          type: string
+          description: Application name (unique identifier)
+        description:
+          type: string
+          description: Human-readable application description
+        email:
+          type: string
+          description: Application owner email address
+        accounts:
+          type: string
+          description: Comma-separated list of cloud accounts the application uses
+        cloudProviders:
+          type: string
+          description: Comma-separated list of cloud providers
+        updated:
+          type: integer
+          description: Last updated timestamp in milliseconds
+    ApplicationDetail:
+      type: object
+      description: Full application details including attributes and configuration
+      properties:
+        name:
+          type: object
+          description: Application name and metadata
+        attributes:
+          $ref: '#/components/schemas/Application'
+        clusters:
+          type: object
+          description: Cluster map by account
+        instances:
+          type: object
+          description: Instance map
+        loadBalancers:
+          type: object
+          description: Load balancer map
+    PipelineConfig:
+      type: object
+      description: A Spinnaker pipeline configuration definition
+      properties:
+        id:
+          type: string
+          description: Unique pipeline configuration ID
+        name:
+          type: string
+          description: Pipeline name
+        application:
+          type: string
+          description: Application this pipeline belongs to
+        description:
+          type: string
+          description: Pipeline description
+        stages:
+          type: array
+          description: Ordered list of pipeline stages
+          items:
+            type: object
+            additionalProperties: true
+        triggers:
+          type: array
+          description: Pipeline trigger configurations
+          items:
+            type: object
+            additionalProperties: true
+        parameters:
+          type: array
+          description: Pipeline parameter definitions
+          items:
+            type: object
+            additionalProperties: true
+        notifications:
+          type: array
+          description: Pipeline notification configurations
+          items:
+            type: object
+            additionalProperties: true
+        lastModifiedBy:
+          type: string
+          description: User who last modified the pipeline
+        updateTs:
+          type: string
+          description: Timestamp of last modification
+    PipelineExecution:
+      type: object
+      description: A pipeline execution instance
+      properties:
+        id:
+          type: string
+          description: Unique execution ID
+        application:
+          type: string
+          description: Application name
+        name:
+          type: string
+          description: Pipeline name
+        status:
+          type: string
+          description: Current execution status
+          enum: [NOT_STARTED, RUNNING, PAUSED, SUSPENDED, SUCCEEDED, FAILED_CONTINUE, TERMINAL, CANCELED, REDIRECT, STOPPED, SKIPPED, BUFFERED]
+        startTime:
+          type: integer
+          description: Execution start time in milliseconds
+        endTime:
+          type: integer
+          description: Execution end time in milliseconds
+        stages:
+          type: array
+          description: List of stage executions
+          items:
+            $ref: '#/components/schemas/StageExecution'
+        trigger:
+          type: object
+          description: Trigger that initiated this execution
+          additionalProperties: true
+    StageExecution:
+      type: object
+      description: A single stage within a pipeline execution
+      properties:
+        id:
+          type: string
+          description: Unique stage execution ID
+        name:
+          type: string
+          description: Stage name
+        type:
+          type: string
+          description: Stage type (e.g., deploy, wait, manualJudgment)
+        status:
+          type: string
+          description: Stage status
+          enum: [NOT_STARTED, RUNNING, PAUSED, SUCCEEDED, FAILED_CONTINUE, TERMINAL, CANCELED, SKIPPED]
+        startTime:
+          type: integer
+          description: Stage start time in milliseconds
+        endTime:
+          type: integer
+          description: Stage end time in milliseconds
+        context:
+          type: object
+          description: Stage context data
+          additionalProperties: true
+    Task:
+      type: object
+      description: A Spinnaker task representing a discrete operation
+      properties:
+        id:
+          type: string
+          description: Unique task ID
+        name:
+          type: string
+          description: Task name
+        status:
+          type: string
+          description: Current task status
+          enum: [NOT_STARTED, RUNNING, SUCCEEDED, TERMINAL, FAILED_CONTINUE, CANCELED]
+        startTime:
+          type: integer
+          description: Task start time in milliseconds
+        endTime:
+          type: integer
+          description: Task end time in milliseconds
+        resultObjects:
+          type: array
+          description: Task result data
+          items:
+            type: object
+            additionalProperties: true
+    TaskCreate:
+      type: object
+      required:
+        - application
+        - description
+        - job
+      properties:
+        application:
+          type: string
+          description: Application name
+        description:
+          type: string
+          description: Task description
+        job:
+          type: array
+          description: List of task job operations
+          items:
+            type: object
+            additionalProperties: true
+    TaskRef:
+      type: object
+      description: Reference to a created or invoked task
+      properties:
+        ref:
+          type: string
+          description: Task reference URL path
+    Cluster:
+      type: object
+      description: A Spinnaker cluster grouping server groups
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        account:
+          type: string
+          description: Cloud account name
+        serverGroups:
+          type: array
+          description: Server groups in this cluster
+          items:
+            $ref: '#/components/schemas/ServerGroup'
+    ServerGroup:
+      type: object
+      description: A cloud server group (ASG, ReplicaSet, etc.)
+      properties:
+        name:
+          type: string
+          description: Server group name
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        instances:
+          type: array
+          description: Instances in this server group
+          items:
+            type: object
+            additionalProperties: true
+        instanceCounts:
+          type: object
+          description: Count of instances by status
+          properties:
+            total:
+              type: integer
+            up:
+              type: integer
+            down:
+              type: integer
+        capacity:
+          type: object
+          description: Server group capacity settings
+          properties:
+            min:
+              type: integer
+            max:
+              type: integer
+            desired:
+              type: integer
+        disabled:
+          type: boolean
+          description: Whether the server group is disabled
+    LoadBalancer:
+      type: object
+      description: A cloud load balancer managed by Spinnaker
+      properties:
+        name:
+          type: string
+          description: Load balancer name
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        type:
+          type: string
+          description: Cloud provider type
+        dnsName:
+          type: string
+          description: DNS hostname for the load balancer
+        serverGroups:
+          type: array
+          description: Server groups attached to this load balancer
+          items:
+            type: object
+            additionalProperties: true
+    Image:
+      type: object
+      description: A cloud machine image
+      properties:
+        imageName:
+          type: string
+          description: Image name
+        imageId:
+          type: string
+          description: Cloud provider image ID
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        provider:
+          type: string
+          description: Cloud provider
+        tags:
+          type: object
+          description: Image tags
+          additionalProperties:
+            type: string
+    Project:
+      type: object
+      description: A Spinnaker project grouping applications
+      properties:
+        id:
+          type: string
+          description: Unique project ID
+        name:
+          type: string
+          description: Project name
+        email:
+          type: string
+          description: Project owner email
+        config:
+          type: object
+          description: Project configuration
+          properties:
+            applications:
+              type: array
+              items:
+                type: string
+              description: List of application names in this project
+            clusters:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+              description: Cluster configuration for the project
+    SearchResult:
+      type: object
+      description: A search result entry
+      properties:
+        type:
+          type: string
+          description: Resource type
+        url:
+          type: string
+          description: Resource URL path
+        displayName:
+          type: string
+          description: Human-readable display name
+        account:
+          type: string
+          description: Cloud account
+        region:
+          type: string
+          description: Cloud region
+        application:
+          type: string
+          description: Associated application name
+security:
+  - oauth2:
+      - openid
