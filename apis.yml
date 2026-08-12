@@ -194,6 +194,9 @@ apis:
   - type: SpectralRules
     url: rules/spinnaker-rules.yml
 common:
+  - type: License
+    name: Apache-2.0
+    url: https://github.com/spinnaker/gate/blob/master/LICENSE
   - type: AgenticAccess
     url: agentic-access/spinnaker-agentic-access.yml
   - type: DomainSecurity
@@ -223,7 +226,7 @@ common:
   - type: ChangeLog
     url: https://spinnaker.io/changelogs/
   - type: OpenAPI
-    url: openapi/spinnaker-gate-openapi.yml
+    url: openapi/_original/spinnaker-gate-openapi.yml
   - type: SpectralRules
     url: rules/spinnaker-rules.yml
   - type: Vocabulary
