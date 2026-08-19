@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications Build Services API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Build Services",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Build Masters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/v2/builds"
+          },
+          "docs": "Retrieves all connected CI build masters (Jenkins, Travis CI, Google Cloud Build, etc.) that are configured as Spinnaker build services."
+        },
+        {
+          "info": {
+            "name": "List Build Master Jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/v2/builds/:buildMaster/jobs",
+            "params": [
+              {
+                "name": "buildMaster",
+                "value": "",
+                "type": "path",
+                "description": "The build master name"
+              }
+            ]
+          },
+          "docs": "Retrieves all available CI jobs from a connected build master. Jobs can be used as pipeline triggers or artifact sources."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

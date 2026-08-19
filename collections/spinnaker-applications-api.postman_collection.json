@@ -1,0 +1,297 @@
+{
+  "item": [
+    {
+      "id": "2fff5d77-1a8e-40d1-9ac5-aa334e7911ed",
+      "name": "Applications",
+      "description": {
+        "content": "Application management operations for Spinnaker application lifecycle including creation, retrieval, and pipeline access",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9944a62e-9124-4e79-85f4-5fe2be4f74b3",
+          "name": "List All Applications",
+          "request": {
+            "name": "List All Applications",
+            "description": {
+              "content": "Retrieves a list of all Spinnaker applications. Each application is a logical grouping of cloud resources including server groups, load balancers, and security groups, organized for management and deployment across one or more cloud accounts.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "account",
+                  "value": "<string>",
+                  "description": "Filter applications by cloud account"
+                },
+                {
+                  "disabled": false,
+                  "key": "owner",
+                  "value": "<string>",
+                  "description": "Filter applications by owner email"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "19cdd984-c698-45bc-ad95-a60395d66d33",
+              "name": "List of applications retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "account",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"email\": \"string\",\n    \"accounts\": \"string\",\n    \"cloudProviders\": \"string\",\n    \"updated\": 8849\n  },\n  {\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"email\": \"string\",\n    \"accounts\": \"string\",\n    \"cloudProviders\": \"string\",\n    \"updated\": 5746\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "18b70d79-0254-4984-9216-e2edf94f7e7b",
+          "name": "Get Application Details",
+          "request": {
+            "name": "Get Application Details",
+            "description": {
+              "content": "Retrieves the full details of a specific Spinnaker application including configuration attributes, cloud accounts, enabled features, and associated pipeline configurations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application",
+                  "description": "(Required) The Spinnaker application name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dfd4a230-db49-4aee-8e8b-8ebb117c0642",
+              "name": "Application details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": {},\n  \"attributes\": {\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"email\": \"string\",\n    \"accounts\": \"string\",\n    \"cloudProviders\": \"string\",\n    \"updated\": 9292\n  },\n  \"clusters\": {},\n  \"instances\": {},\n  \"loadBalancers\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a24fb09-6dd9-4eb5-a806-630bc5a89f72",
+              "name": "Application not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8084",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "openid profile email"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://accounts.example.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://accounts.example.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "db79a147-1e48-43c2-afd4-6482bf8e58fa",
+    "name": "Spinnaker Gate Applications API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.\n\nContact Support:\n Name: Spinnaker Community",
+      "type": "text/plain"
+    }
+  }
+}

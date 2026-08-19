@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications",
+            "params": [
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Filter applications by cloud account"
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Filter applications by owner email"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all Spinnaker applications. Each application is a logical grouping of cloud resources including server groups, load balancers, and security groups, organized for management and deployment across one or more cloud accounts."
+        },
+        {
+          "info": {
+            "name": "Get Application Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ]
+          },
+          "docs": "Retrieves the full details of a specific Spinnaker application including configuration attributes, cloud accounts, enabled features, and associated pipeline configurations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications Projects API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Spinnaker Projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/projects"
+          },
+          "docs": "Retrieves all Spinnaker projects. Projects group multiple applications and pipelines into organizational units for team-based access and dashboard views."
+        },
+        {
+          "info": {
+            "name": "Get Spinnaker Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/projects/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The project ID"
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific Spinnaker project including its member applications, cluster configuration, and pipeline summary."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

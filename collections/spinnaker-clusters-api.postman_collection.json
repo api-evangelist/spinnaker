@@ -1,0 +1,283 @@
+{
+  "item": [
+    {
+      "id": "5a42c7a3-08ed-45ad-8e3b-cab0597219b5",
+      "name": "Clusters",
+      "description": {
+        "content": "Cloud cluster and server group operations for managing deployment targets across cloud providers",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f911c6d1-90f3-4af0-a4ab-1e9c3b65e205",
+          "name": "List Application Clusters",
+          "request": {
+            "name": "List Application Clusters",
+            "description": {
+              "content": "Retrieves all clusters for a Spinnaker application across all configured cloud accounts. Clusters are logical groupings of server groups (e.g., autoscaling groups, replica sets) that represent a single deployment target.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application",
+                "clusters"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application",
+                  "description": "(Required) The Spinnaker application name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0d648741-ca99-4be6-83e2-e20cffe01fff",
+              "name": "Clusters retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application",
+                    "clusters"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": [\n    {\n      \"name\": \"string\",\n      \"account\": \"string\",\n      \"serverGroups\": [\n        {\n          \"name\": \"string\",\n          \"account\": \"string\",\n          \"region\": \"string\",\n          \"instances\": [\n            {\n              \"key_0\": 7616.128060460188,\n              \"key_1\": false\n            },\n            {\n              \"key_0\": 4526,\n              \"key_1\": 9354,\n              \"key_2\": true\n            }\n          ],\n          \"instanceCounts\": {\n            \"total\": 9942,\n            \"up\": 6842,\n            \"down\": 3362\n          },\n          \"capacity\": {\n            \"min\": 5400,\n            \"max\": 6457,\n            \"desired\": 1024\n          },\n          \"disabled\": true\n        },\n        {\n          \"name\": \"string\",\n          \"account\": \"string\",\n          \"region\": \"string\",\n          \"instances\": [\n            {\n              \"key_0\": 8983.601634796822,\n              \"key_1\": 2693\n            },\n            {\n              \"key_0\": true\n            }\n          ],\n          \"instanceCounts\": {\n            \"total\": 6557,\n            \"up\": 6168,\n            \"down\": 175\n          },\n          \"capacity\": {\n            \"min\": 5305,\n            \"max\": 2325,\n            \"desired\": 9163\n          },\n          \"disabled\": false\n        }\n      ]\n    },\n    {\n      \"name\": \"string\",\n      \"account\": \"string\",\n      \"serverGroups\": [\n        {\n          \"name\": \"string\",\n          \"account\": \"string\",\n          \"region\": \"string\",\n          \"instances\": [\n            {\n              \"key_0\": 4640,\n              \"key_1\": true,\n              \"key_2\": false\n            },\n            {\n              \"key_0\": 5836.486035289805,\n              \"key_1\": \"string\",\n              \"key_2\": 2829,\n              \"key_3\": true,\n              \"key_4\": 5727\n            }\n          ],\n          \"instanceCounts\": {\n            \"total\": 5759,\n            \"up\": 2025,\n            \"down\": 1753\n          },\n          \"capacity\": {\n            \"min\": 7465,\n            \"max\": 8378,\n            \"desired\": 1931\n          },\n          \"disabled\": false\n        },\n        {\n          \"name\": \"string\",\n          \"account\": \"string\",\n          \"region\": \"string\",\n          \"instances\": [\n            {\n              \"key_0\": 3422,\n              \"key_1\": 3008,\n              \"key_2\": 9742\n            },\n            {\n              \"key_0\": 9879\n            }\n          ],\n          \"instanceCounts\": {\n            \"total\": 1258,\n            \"up\": 3041,\n            \"down\": 55\n          },\n          \"capacity\": {\n            \"min\": 6651,\n            \"max\": 8790,\n            \"desired\": 6574\n          },\n          \"disabled\": false\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "03545bbd-dbe3-41f4-955d-667a8b79c776",
+          "name": "List Cluster Server Groups",
+          "request": {
+            "name": "List Cluster Server Groups",
+            "description": {
+              "content": "Retrieves a list of server groups for a specific cluster in a given cloud account. Server groups represent the underlying infrastructure (ASGs, Kubernetes ReplicaSets, etc.) that Spinnaker manages.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application",
+                "clusters",
+                ":account",
+                ":clusterName",
+                "serverGroups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application",
+                  "description": "(Required) The Spinnaker application name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account",
+                  "description": "(Required) The cloud account name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "clusterName",
+                  "description": "(Required) The cluster name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bff1465c-65ca-423e-b2eb-79f18d223994",
+              "name": "Server groups retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application",
+                    "clusters",
+                    ":account",
+                    ":clusterName",
+                    "serverGroups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "account",
+                      "description": "(Required) The cloud account name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "clusterName",
+                      "description": "(Required) The cluster name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"account\": \"string\",\n    \"region\": \"string\",\n    \"instances\": [\n      {\n        \"key_0\": \"string\",\n        \"key_1\": true,\n        \"key_2\": false\n      },\n      {\n        \"key_0\": true,\n        \"key_1\": false,\n        \"key_2\": 4553\n      }\n    ],\n    \"instanceCounts\": {\n      \"total\": 9504,\n      \"up\": 1225,\n      \"down\": 9176\n    },\n    \"capacity\": {\n      \"min\": 7923,\n      \"max\": 5164,\n      \"desired\": 1012\n    },\n    \"disabled\": true\n  },\n  {\n    \"name\": \"string\",\n    \"account\": \"string\",\n    \"region\": \"string\",\n    \"instances\": [\n      {\n        \"key_0\": 1000.5140932857337,\n        \"key_1\": 62.88270514207106\n      },\n      {\n        \"key_0\": 8294\n      }\n    ],\n    \"instanceCounts\": {\n      \"total\": 1078,\n      \"up\": 2764,\n      \"down\": 9812\n    },\n    \"capacity\": {\n      \"min\": 5046,\n      \"max\": 8822,\n      \"desired\": 7748\n    },\n    \"disabled\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8084",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "openid profile email"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://accounts.example.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://accounts.example.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0dcaafdd-90a2-4a26-a751-e0b26d189778",
+    "name": "Spinnaker Gate Applications Clusters API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.\n\nContact Support:\n Name: Spinnaker Community",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "item": [
+    {
+      "id": "7c777abe-0ed1-4ad0-919f-2ee77d435e0b",
+      "name": "Build Services",
+      "description": {
+        "content": "CI build service integration for discovering build masters, jobs, and build artifacts",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0bc3fcaf-8c1d-42fe-82f4-e27d94ac96d5",
+          "name": "List Build Masters",
+          "request": {
+            "name": "List Build Masters",
+            "description": {
+              "content": "Retrieves all connected CI build masters (Jenkins, Travis CI, Google Cloud Build, etc.) that are configured as Spinnaker build services.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "builds"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e87cc1a2-b181-4462-9577-4247c5cabc46",
+              "name": "Build masters retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "builds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"string\",\n  \"string\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1de2af51-89b8-48be-8eec-303090e8fc9c",
+          "name": "List Build Master Jobs",
+          "request": {
+            "name": "List Build Master Jobs",
+            "description": {
+              "content": "Retrieves all available CI jobs from a connected build master. Jobs can be used as pipeline triggers or artifact sources.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "builds",
+                ":buildMaster",
+                "jobs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "buildMaster",
+                  "description": "(Required) The build master name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3e9068ce-a82d-424a-97e2-66a955df26c2",
+              "name": "Build jobs retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "builds",
+                    ":buildMaster",
+                    "jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "buildMaster",
+                      "description": "(Required) The build master name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"string\",\n  \"string\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8084",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "openid profile email"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://accounts.example.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://accounts.example.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "240f02ad-d7cb-4407-bc72-4b06086f7e52",
+    "name": "Spinnaker Gate Applications Build Services API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.\n\nContact Support:\n Name: Spinnaker Community",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications Tasks API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Application Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/tasks",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of tasks per page"
+              }
+            ]
+          },
+          "docs": "Retrieves the task history for a Spinnaker application. Tasks represent individual operations such as deployments, resizes, or rollbacks."
+        },
+        {
+          "info": {
+            "name": "Create Application Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:8084/applications/:application/tasks",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and executes a new Spinnaker task for the specified application. Tasks can represent operations like deploying a server group, resizing a cluster, or modifying load balancer rules."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

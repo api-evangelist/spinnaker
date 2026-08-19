@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications Load Balancers API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Load Balancers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Application Load Balancers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/loadBalancers",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Cloud provider to filter by"
+              }
+            ]
+          },
+          "docs": "Retrieves all load balancers associated with a Spinnaker application across configured cloud accounts and regions."
+        },
+        {
+          "info": {
+            "name": "List All Load Balancers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/loadBalancers",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Cloud provider name"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all load balancers for a given cloud provider across all managed accounts and regions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

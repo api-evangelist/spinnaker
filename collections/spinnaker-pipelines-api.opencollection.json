@@ -1,0 +1,231 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications Pipelines API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Pipelines",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Pipeline Configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/pipelineConfigs",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ]
+          },
+          "docs": "Retrieves all pipeline configurations associated with a Spinnaker application. Pipeline configs define the stages, triggers, parameters, and notifications for deployment workflows."
+        },
+        {
+          "info": {
+            "name": "Invoke Pipeline By Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:8084/applications/:application/pipelineConfigs/:pipelineName",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "pipelineName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the pipeline configuration to invoke"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Triggers a pipeline execution for the named pipeline configuration in the specified application. Accepts optional parameters to pass to the pipeline run."
+        },
+        {
+          "info": {
+            "name": "List Pipeline Executions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/pipelines",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of executions to return"
+              },
+              {
+                "name": "pipelineName",
+                "value": "",
+                "type": "query",
+                "description": "Filter by pipeline name"
+              },
+              {
+                "name": "statuses",
+                "value": "",
+                "type": "query",
+                "description": "Filter by execution status (comma-separated)"
+              }
+            ]
+          },
+          "docs": "Retrieves the execution history for all pipelines in a Spinnaker application. Returns recent pipeline runs with their status, stages, and completion details."
+        },
+        {
+          "info": {
+            "name": "Save Pipeline Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:8084/pipelines",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates or updates a pipeline configuration. If the pipeline has an existing ID it is updated; otherwise a new pipeline configuration is created for the specified application."
+        },
+        {
+          "info": {
+            "name": "Get Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/pipelines/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Retrieves the full details of a specific pipeline execution by its ID, including all stages, their current status, outputs, and any error messages."
+        },
+        {
+          "info": {
+            "name": "Delete Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "http://localhost:8084/pipelines/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Deletes a pipeline execution record from Spinnaker history."
+        },
+        {
+          "info": {
+            "name": "Cancel Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:8084/pipelines/:id/cancel",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              },
+              {
+                "name": "reason",
+                "value": "",
+                "type": "query",
+                "description": "Reason for cancellation"
+              }
+            ]
+          },
+          "docs": "Cancels a running pipeline execution. The cancellation is propagated to all running stages and the pipeline is marked as CANCELED."
+        },
+        {
+          "info": {
+            "name": "Pause Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:8084/pipelines/:id/pause",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Pauses a running pipeline execution. The pipeline can be resumed by calling the resume endpoint."
+        },
+        {
+          "info": {
+            "name": "Resume Pipeline Execution",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "http://localhost:8084/pipelines/:id/resume",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The pipeline execution ID"
+              }
+            ]
+          },
+          "docs": "Resumes a paused pipeline execution from where it was paused."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

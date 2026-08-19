@@ -1,0 +1,275 @@
+{
+  "item": [
+    {
+      "id": "c7d35f3d-faec-43d6-9926-c72fe47d5e56",
+      "name": "Projects",
+      "description": {
+        "content": "Spinnaker project management for grouping applications and pipelines into organizational units",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b6ea4d75-5f40-4a68-8e78-d92592ac1406",
+          "name": "List Spinnaker Projects",
+          "request": {
+            "name": "List Spinnaker Projects",
+            "description": {
+              "content": "Retrieves all Spinnaker projects. Projects group multiple applications and pipelines into organizational units for team-based access and dashboard views.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0cc3b329-925d-40e7-bc90-59656d9d11b8",
+              "name": "Projects retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"email\": \"string\",\n    \"config\": {\n      \"applications\": [\n        \"string\",\n        \"string\"\n      ],\n      \"clusters\": [\n        {\n          \"key_0\": 9519.872646210717,\n          \"key_1\": true\n        },\n        {\n          \"key_0\": 4963.830969502521,\n          \"key_1\": 2943\n        }\n      ]\n    }\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"email\": \"string\",\n    \"config\": {\n      \"applications\": [\n        \"string\",\n        \"string\"\n      ],\n      \"clusters\": [\n        {\n          \"key_0\": 9415.165329221083\n        },\n        {\n          \"key_0\": 8424\n        }\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83575c62-5e5e-45df-aafc-a2865291cfe8",
+          "name": "Get Spinnaker Project",
+          "request": {
+            "name": "Get Spinnaker Project",
+            "description": {
+              "content": "Retrieves details of a specific Spinnaker project including its member applications, cluster configuration, and pipeline summary.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The project ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "735d8a02-cea5-45f8-ad95-86389c1017a2",
+              "name": "Project details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The project ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"config\": {\n    \"applications\": [\n      \"string\",\n      \"string\"\n    ],\n    \"clusters\": [\n      {\n        \"key_0\": \"string\"\n      },\n      {\n        \"key_0\": 9811.889947582764,\n        \"key_1\": true\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2966ac9f-24ce-4bb4-86e3-d4969ad089a0",
+              "name": "Project not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The project ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8084",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "openid profile email"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://accounts.example.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://accounts.example.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9c6a98af-a57e-461a-91bb-d610d13f4114",
+    "name": "Spinnaker Gate Applications Projects API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.\n\nContact Support:\n Name: Spinnaker Community",
+      "type": "text/plain"
+    }
+  }
+}

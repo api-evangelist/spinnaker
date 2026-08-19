@@ -1,0 +1,253 @@
+{
+  "item": [
+    {
+      "id": "8d7d6cdb-a995-4258-8b29-d9e47a923f8b",
+      "name": "Load Balancers",
+      "description": {
+        "content": "Load balancer management operations for cloud load balancing resources across supported cloud providers",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e13127d6-df6f-4756-bb95-25cae20a3bab",
+          "name": "List Application Load Balancers",
+          "request": {
+            "name": "List Application Load Balancers",
+            "description": {
+              "content": "Retrieves all load balancers associated with a Spinnaker application across configured cloud accounts and regions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application",
+                "loadBalancers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "provider",
+                  "value": "<string>",
+                  "description": "Cloud provider to filter by"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application",
+                  "description": "(Required) The Spinnaker application name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "023e0067-3ec0-4709-be2c-4b24921792b7",
+              "name": "Load balancers retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application",
+                    "loadBalancers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "provider",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"account\": \"string\",\n    \"region\": \"string\",\n    \"type\": \"string\",\n    \"dnsName\": \"string\",\n    \"serverGroups\": [\n      {\n        \"key_0\": 5118\n      },\n      {\n        \"key_0\": true\n      }\n    ]\n  },\n  {\n    \"name\": \"string\",\n    \"account\": \"string\",\n    \"region\": \"string\",\n    \"type\": \"string\",\n    \"dnsName\": \"string\",\n    \"serverGroups\": [\n      {\n        \"key_0\": false\n      },\n      {\n        \"key_0\": 9153,\n        \"key_1\": 7874.373043461114\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c937bfcc-ff33-4b7d-b5e5-fa9f837e6e79",
+          "name": "List All Load Balancers",
+          "request": {
+            "name": "List All Load Balancers",
+            "description": {
+              "content": "Retrieves a list of all load balancers for a given cloud provider across all managed accounts and regions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "loadBalancers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "provider",
+                  "value": "<string>",
+                  "description": "Cloud provider name"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "71fdb7cd-7732-4804-b7ad-1bae76452e1b",
+              "name": "Load balancers retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loadBalancers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "provider",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"account\": \"string\",\n    \"region\": \"string\",\n    \"type\": \"string\",\n    \"dnsName\": \"string\",\n    \"serverGroups\": [\n      {\n        \"key_0\": 5118\n      },\n      {\n        \"key_0\": true\n      }\n    ]\n  },\n  {\n    \"name\": \"string\",\n    \"account\": \"string\",\n    \"region\": \"string\",\n    \"type\": \"string\",\n    \"dnsName\": \"string\",\n    \"serverGroups\": [\n      {\n        \"key_0\": false\n      },\n      {\n        \"key_0\": 9153,\n        \"key_1\": 7874.373043461114\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8084",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "openid profile email"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://accounts.example.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://accounts.example.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a1315c23-0cde-4775-890f-ddf7a41af7ae",
+    "name": "Spinnaker Gate Applications Load Balancers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.\n\nContact Support:\n Name: Spinnaker Community",
+      "type": "text/plain"
+    }
+  }
+}

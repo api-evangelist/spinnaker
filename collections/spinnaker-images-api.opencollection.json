@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications Images API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Find Cloud Images",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/images/find",
+            "params": [
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Cloud provider to search"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "query",
+                "description": "Cloud account to search within"
+              },
+              {
+                "name": "region",
+                "value": "",
+                "type": "query",
+                "description": "Cloud region to search within"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search query string for image name filtering"
+              }
+            ]
+          },
+          "docs": "Searches for available cloud images (AMIs, GCE images, etc.) filtered by cloud provider, region, account, and other attributes. Used to select deployment images for pipeline stages."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

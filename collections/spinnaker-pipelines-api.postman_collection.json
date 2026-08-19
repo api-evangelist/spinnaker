@@ -1,0 +1,1013 @@
+{
+  "item": [
+    {
+      "id": "76eb8de1-0b4f-4001-b892-bd3ac7a4242f",
+      "name": "Pipelines",
+      "description": {
+        "content": "Pipeline definition and execution management including saving pipeline configurations, triggering runs, and controlling execution state",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f5e0af0a-4591-49bf-8be1-faa0ffaba6c6",
+          "name": "List Pipeline Configurations",
+          "request": {
+            "name": "List Pipeline Configurations",
+            "description": {
+              "content": "Retrieves all pipeline configurations associated with a Spinnaker application. Pipeline configs define the stages, triggers, parameters, and notifications for deployment workflows.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application",
+                "pipelineConfigs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application",
+                  "description": "(Required) The Spinnaker application name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9628e4fa-daa5-4765-a4b6-2aac77ee47dc",
+              "name": "Pipeline configurations retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application",
+                    "pipelineConfigs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"application\": \"string\",\n    \"description\": \"string\",\n    \"stages\": [\n      {\n        \"key_0\": true\n      },\n      {\n        \"key_0\": 7853,\n        \"key_1\": true\n      }\n    ],\n    \"triggers\": [\n      {\n        \"key_0\": 8906,\n        \"key_1\": \"string\"\n      },\n      {\n        \"key_0\": \"string\"\n      }\n    ],\n    \"parameters\": [\n      {\n        \"key_0\": 1274.019377915091\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": false,\n        \"key_2\": false,\n        \"key_3\": \"string\"\n      }\n    ],\n    \"notifications\": [\n      {\n        \"key_0\": 1277.3306512530457,\n        \"key_1\": 913\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": true,\n        \"key_2\": \"string\"\n      }\n    ],\n    \"lastModifiedBy\": \"string\",\n    \"updateTs\": \"string\"\n  },\n  {\n    \"id\": \"string\",\n    \"name\": \"string\",\n    \"application\": \"string\",\n    \"description\": \"string\",\n    \"stages\": [\n      {\n        \"key_0\": 6596,\n        \"key_1\": \"string\",\n        \"key_2\": 8074.2791759935535,\n        \"key_3\": 6582\n      },\n      {\n        \"key_0\": 1101.7766837530774,\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": 8746,\n        \"key_4\": \"string\"\n      }\n    ],\n    \"triggers\": [\n      {\n        \"key_0\": \"string\",\n        \"key_1\": false\n      },\n      {\n        \"key_0\": true,\n        \"key_1\": 1925\n      }\n    ],\n    \"parameters\": [\n      {\n        \"key_0\": true\n      },\n      {\n        \"key_0\": 9862.508798243553\n      }\n    ],\n    \"notifications\": [\n      {\n        \"key_0\": \"string\",\n        \"key_1\": 6010\n      },\n      {\n        \"key_0\": false,\n        \"key_1\": true\n      }\n    ],\n    \"lastModifiedBy\": \"string\",\n    \"updateTs\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7740c985-7467-4cd1-b639-29f40711a8b4",
+          "name": "Invoke Pipeline By Name",
+          "request": {
+            "name": "Invoke Pipeline By Name",
+            "description": {
+              "content": "Triggers a pipeline execution for the named pipeline configuration in the specified application. Accepts optional parameters to pass to the pipeline run.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application",
+                "pipelineConfigs",
+                ":pipelineName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application",
+                  "description": "(Required) The Spinnaker application name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pipelineName",
+                  "description": "(Required) The name of the pipeline configuration to invoke"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"parameters\": {\n    \"key_0\": false,\n    \"key_1\": 5838\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9d92c2a-2ab3-49b1-adf4-1c6356b65421",
+              "name": "Pipeline invoked successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application",
+                    "pipelineConfigs",
+                    ":pipelineName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pipelineName",
+                      "description": "(Required) The name of the pipeline configuration to invoke"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"parameters\": {\n    \"key_0\": true,\n    \"key_1\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ref\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec79c19a-02a3-437f-91e4-dba7abf6f490",
+          "name": "List Pipeline Executions",
+          "request": {
+            "name": "List Pipeline Executions",
+            "description": {
+              "content": "Retrieves the execution history for all pipelines in a Spinnaker application. Returns recent pipeline runs with their status, stages, and completion details.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "applications",
+                ":application",
+                "pipelines"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Maximum number of executions to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "pipelineName",
+                  "value": "<string>",
+                  "description": "Filter by pipeline name"
+                },
+                {
+                  "disabled": false,
+                  "key": "statuses",
+                  "value": "<string>",
+                  "description": "Filter by execution status (comma-separated)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "application",
+                  "description": "(Required) The Spinnaker application name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1203e73f-bda9-4288-969b-206d8edc22c0",
+              "name": "Pipeline executions retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "applications",
+                    ":application",
+                    "pipelines"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "pipelineName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "statuses",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "application",
+                      "description": "(Required) The Spinnaker application name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"application\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"SUSPENDED\",\n    \"startTime\": 6416,\n    \"endTime\": 9147,\n    \"stages\": [\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"type\": \"string\",\n        \"status\": \"SUCCEEDED\",\n        \"startTime\": 7414,\n        \"endTime\": 1950,\n        \"context\": {\n          \"key_0\": false\n        }\n      },\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"type\": \"string\",\n        \"status\": \"NOT_STARTED\",\n        \"startTime\": 9927,\n        \"endTime\": 4888,\n        \"context\": {\n          \"key_0\": 7397,\n          \"key_1\": \"string\"\n        }\n      }\n    ],\n    \"trigger\": {\n      \"key_0\": 2500.472920832253,\n      \"key_1\": \"string\"\n    }\n  },\n  {\n    \"id\": \"string\",\n    \"application\": \"string\",\n    \"name\": \"string\",\n    \"status\": \"STOPPED\",\n    \"startTime\": 1819,\n    \"endTime\": 9952,\n    \"stages\": [\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"type\": \"string\",\n        \"status\": \"SKIPPED\",\n        \"startTime\": 2903,\n        \"endTime\": 30,\n        \"context\": {\n          \"key_0\": 9492,\n          \"key_1\": 5916.933603945113\n        }\n      },\n      {\n        \"id\": \"string\",\n        \"name\": \"string\",\n        \"type\": \"string\",\n        \"status\": \"SKIPPED\",\n        \"startTime\": 5821,\n        \"endTime\": 7245,\n        \"context\": {\n          \"key_0\": true,\n          \"key_1\": 6977.622087147911,\n          \"key_2\": true\n        }\n      }\n    ],\n    \"trigger\": {\n      \"key_0\": 1985\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a2c3dc2b-a7c3-43e6-891f-d8b354df2333",
+          "name": "Save Pipeline Definition",
+          "request": {
+            "name": "Save Pipeline Definition",
+            "description": {
+              "content": "Creates or updates a pipeline configuration. If the pipeline has an existing ID it is updated; otherwise a new pipeline configuration is created for the specified application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pipelines"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"application\": \"<string>\",\n  \"description\": \"<string>\",\n  \"stages\": [\n    {\n      \"key_0\": 8864\n    },\n    {\n      \"key_0\": 1740.0536838774428,\n      \"key_1\": 2640.9312386178385\n    }\n  ],\n  \"triggers\": [\n    {\n      \"key_0\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\",\n      \"key_3\": false\n    }\n  ],\n  \"parameters\": [\n    {\n      \"key_0\": 1561.3031671439737,\n      \"key_1\": 5785\n    },\n    {\n      \"key_0\": 7481,\n      \"key_1\": 5691\n    }\n  ],\n  \"notifications\": [\n    {\n      \"key_0\": true,\n      \"key_1\": 9355\n    },\n    {\n      \"key_0\": 1727.244807397119\n    }\n  ],\n  \"lastModifiedBy\": \"<string>\",\n  \"updateTs\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8415764f-8188-4492-83ff-26875d0182fe",
+              "name": "Pipeline saved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pipelines"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"application\": \"<string>\",\n  \"description\": \"<string>\",\n  \"stages\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\",\n      \"key_2\": \"string\",\n      \"key_3\": \"string\"\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ],\n  \"triggers\": [\n    {\n      \"key_0\": 2000,\n      \"key_1\": \"string\",\n      \"key_2\": true\n    },\n    {\n      \"key_0\": 5670.059660795185\n    }\n  ],\n  \"parameters\": [\n    {\n      \"key_0\": false,\n      \"key_1\": 810,\n      \"key_2\": 4097\n    },\n    {\n      \"key_0\": 6243.765684795174,\n      \"key_1\": 2018,\n      \"key_2\": 3656.6262343374756,\n      \"key_3\": true\n    }\n  ],\n  \"notifications\": [\n    {\n      \"key_0\": false,\n      \"key_1\": 244.84603637913938\n    },\n    {\n      \"key_0\": 6650,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"lastModifiedBy\": \"<string>\",\n  \"updateTs\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54bfc69d-0780-49ed-b72f-0c5ed62ec7b1",
+          "name": "Get Pipeline Execution",
+          "request": {
+            "name": "Get Pipeline Execution",
+            "description": {
+              "content": "Retrieves the full details of a specific pipeline execution by its ID, including all stages, their current status, outputs, and any error messages.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pipelines",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The pipeline execution ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "85de3ae8-fddc-48f5-9687-4c6df837005e",
+              "name": "Pipeline execution retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pipelines",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The pipeline execution ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"application\": \"string\",\n  \"name\": \"string\",\n  \"status\": \"BUFFERED\",\n  \"startTime\": 8338,\n  \"endTime\": 8473,\n  \"stages\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"status\": \"TERMINAL\",\n      \"startTime\": 4631,\n      \"endTime\": 5326,\n      \"context\": {\n        \"key_0\": 7389.071913564451,\n        \"key_1\": 4306.464887665857\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"string\",\n      \"status\": \"FAILED_CONTINUE\",\n      \"startTime\": 3185,\n      \"endTime\": 5316,\n      \"context\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ],\n  \"trigger\": {\n    \"key_0\": false,\n    \"key_1\": 1360\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "272debee-d1cd-4c44-97d6-fbad5d8df1b8",
+              "name": "Pipeline execution not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pipelines",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The pipeline execution ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1f7e8e06-0485-44d7-a10d-bb2097752b90",
+          "name": "Delete Pipeline Execution",
+          "request": {
+            "name": "Delete Pipeline Execution",
+            "description": {
+              "content": "Deletes a pipeline execution record from Spinnaker history.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pipelines",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The pipeline execution ID"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a53c1e38-7202-47d4-ae07-f97720928250",
+              "name": "Pipeline execution deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pipelines",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The pipeline execution ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "061a3066-700a-4899-af12-3ac3d145fd3f",
+          "name": "Cancel Pipeline Execution",
+          "request": {
+            "name": "Cancel Pipeline Execution",
+            "description": {
+              "content": "Cancels a running pipeline execution. The cancellation is propagated to all running stages and the pipeline is marked as CANCELED.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pipelines",
+                ":id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "reason",
+                  "value": "<string>",
+                  "description": "Reason for cancellation"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The pipeline execution ID"
+                }
+              ]
+            },
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b643bfb2-21eb-4ded-b412-80a4500a9e85",
+              "name": "Pipeline execution canceled successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pipelines",
+                    ":id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "reason",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The pipeline execution ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5ab8b5ef-2604-466d-b5ca-981d81d97f17",
+          "name": "Pause Pipeline Execution",
+          "request": {
+            "name": "Pause Pipeline Execution",
+            "description": {
+              "content": "Pauses a running pipeline execution. The pipeline can be resumed by calling the resume endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pipelines",
+                ":id",
+                "pause"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The pipeline execution ID"
+                }
+              ]
+            },
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6c7a8c10-a31e-4709-b736-415245e87106",
+              "name": "Pipeline execution paused successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pipelines",
+                    ":id",
+                    "pause"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The pipeline execution ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8cb26e1e-2cbb-490a-810f-587ac0cca6e1",
+          "name": "Resume Pipeline Execution",
+          "request": {
+            "name": "Resume Pipeline Execution",
+            "description": {
+              "content": "Resumes a paused pipeline execution from where it was paused.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pipelines",
+                ":id",
+                "resume"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The pipeline execution ID"
+                }
+              ]
+            },
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "916bdc75-7679-4f40-a9cc-801bb4297e5a",
+              "name": "Pipeline execution resumed successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pipelines",
+                    ":id",
+                    "resume"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The pipeline execution ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8084",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "openid profile email"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://accounts.example.com/oauth/token"
+      },
+      {
+        "key": "authUrl",
+        "value": "https://accounts.example.com/oauth/authorize"
+      },
+      {
+        "key": "grant_type",
+        "value": "authorization_code"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b35e5408-491b-4753-9861-5db608a7aaa9",
+    "name": "Spinnaker Gate Applications Pipelines API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.\n\nContact Support:\n Name: Spinnaker Community",
+      "type": "text/plain"
+    }
+  }
+}

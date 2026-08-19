@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spinnaker Gate Applications Clusters API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "authorization_code",
+      "authorizationUrl": "https://accounts.example.com/oauth/authorize",
+      "accessTokenUrl": "https://accounts.example.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Clusters",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Application Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/clusters",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              }
+            ]
+          },
+          "docs": "Retrieves all clusters for a Spinnaker application across all configured cloud accounts. Clusters are logical groupings of server groups (e.g., autoscaling groups, replica sets) that represent a single deployment target."
+        },
+        {
+          "info": {
+            "name": "List Cluster Server Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "http://localhost:8084/applications/:application/clusters/:account/:clusterName/serverGroups",
+            "params": [
+              {
+                "name": "application",
+                "value": "",
+                "type": "path",
+                "description": "The Spinnaker application name"
+              },
+              {
+                "name": "account",
+                "value": "",
+                "type": "path",
+                "description": "The cloud account name"
+              },
+              {
+                "name": "clusterName",
+                "value": "",
+                "type": "path",
+                "description": "The cluster name"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of server groups for a specific cluster in a given cloud account. Server groups represent the underlying infrastructure (ASGs, Kubernetes ReplicaSets, etc.) that Spinnaker manages."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
