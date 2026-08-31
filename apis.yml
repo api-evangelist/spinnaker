@@ -127,7 +127,7 @@ apis:
     Load balancer management operations for cloud load balancing resources across supported cloud providers
   humanURL: https://spinnaker.io/docs/reference/api/
   tags:
-  - Load Balancer
+  - Load Balancers
   tags_raw:
   - Load Balancers
   properties:
