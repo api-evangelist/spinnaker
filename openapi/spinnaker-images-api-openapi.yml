@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Spinnaker Gate Applications Images API
-  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices. Gate provides a unified REST API for managing applications, pipelines, deployments, server groups, load balancers, and cloud infrastructure across multiple cloud providers including AWS, GCP, Azure, Kubernetes, and others. It supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+  title: Spinnaker Gate Images API
+  description: Gate is the API gateway for the Spinnaker continuous delivery platform, serving as the primary interface through which the Spinnaker UI (Deck) and external API clients communicate with Spinnaker's microservices.
   version: '1.0'
   contact:
     name: Spinnaker Community

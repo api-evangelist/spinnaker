@@ -1,15 +1,7 @@
 {
   "provider": "spinnaker",
   "sources": [
-    "spinnaker-applications-api-openapi.yml",
-    "spinnaker-build-services-api-openapi.yml",
-    "spinnaker-clusters-api-openapi.yml",
-    "spinnaker-images-api-openapi.yml",
-    "spinnaker-load-balancers-api-openapi.yml",
-    "spinnaker-pipelines-api-openapi.yml",
-    "spinnaker-projects-api-openapi.yml",
-    "spinnaker-search-api-openapi.yml",
-    "spinnaker-tasks-api-openapi.yml"
+    "_original/spinnaker-gate-openapi.yml"
   ],
   "outputs": [
     "spinnaker-applications-api-openapi.yml",
@@ -25,6 +17,20 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "spinnaker-gate-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "spinnaker-applications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-build-services-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-clusters-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-images-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-load-balancers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-pipelines-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-projects-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spinnaker-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
