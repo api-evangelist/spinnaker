@@ -232,6 +232,13 @@ paths:
           description: Pipeline execution resumed successfully
 components:
   schemas:
+    TaskRef:
+      type: object
+      description: Reference to a created or invoked task
+      properties:
+        ref:
+          type: string
+          description: Task reference URL path
     PipelineExecution:
       type: object
       description: A pipeline execution instance
@@ -275,6 +282,41 @@ components:
         trigger:
           type: object
           description: Trigger that initiated this execution
+          additionalProperties: true
+    StageExecution:
+      type: object
+      description: A single stage within a pipeline execution
+      properties:
+        id:
+          type: string
+          description: Unique stage execution ID
+        name:
+          type: string
+          description: Stage name
+        type:
+          type: string
+          description: Stage type (e.g., deploy, wait, manualJudgment)
+        status:
+          type: string
+          description: Stage status
+          enum:
+          - NOT_STARTED
+          - RUNNING
+          - PAUSED
+          - SUCCEEDED
+          - FAILED_CONTINUE
+          - TERMINAL
+          - CANCELED
+          - SKIPPED
+        startTime:
+          type: integer
+          description: Stage start time in milliseconds
+        endTime:
+          type: integer
+          description: Stage end time in milliseconds
+        context:
+          type: object
+          description: Stage context data
           additionalProperties: true
     PipelineConfig:
       type: object
@@ -322,48 +364,6 @@ components:
         updateTs:
           type: string
           description: Timestamp of last modification
-    StageExecution:
-      type: object
-      description: A single stage within a pipeline execution
-      properties:
-        id:
-          type: string
-          description: Unique stage execution ID
-        name:
-          type: string
-          description: Stage name
-        type:
-          type: string
-          description: Stage type (e.g., deploy, wait, manualJudgment)
-        status:
-          type: string
-          description: Stage status
-          enum:
-          - NOT_STARTED
-          - RUNNING
-          - PAUSED
-          - SUCCEEDED
-          - FAILED_CONTINUE
-          - TERMINAL
-          - CANCELED
-          - SKIPPED
-        startTime:
-          type: integer
-          description: Stage start time in milliseconds
-        endTime:
-          type: integer
-          description: Stage end time in milliseconds
-        context:
-          type: object
-          description: Stage context data
-          additionalProperties: true
-    TaskRef:
-      type: object
-      description: Reference to a created or invoked task
-      properties:
-        ref:
-          type: string
-          description: Task reference URL path
   securitySchemes:
     oauth2:
       type: oauth2

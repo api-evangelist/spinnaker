@@ -39,6 +39,7 @@ tags:
   - DevOps
   - Multi-Cloud
   - Pipelines
+  - CI/CD
 url: https://raw.githubusercontent.com/api-evangelist/spinnaker/refs/heads/main/apis.yml
 created: '2026-03-26'
 modified: '2026-05-19'

@@ -89,25 +89,6 @@ components:
         ref:
           type: string
           description: Task reference URL path
-    TaskCreate:
-      type: object
-      required:
-      - application
-      - description
-      - job
-      properties:
-        application:
-          type: string
-          description: Application name
-        description:
-          type: string
-          description: Task description
-        job:
-          type: array
-          description: List of task job operations
-          items:
-            type: object
-            additionalProperties: true
     Task:
       type: object
       description: A Spinnaker task representing a discrete operation
@@ -137,6 +118,25 @@ components:
         resultObjects:
           type: array
           description: Task result data
+          items:
+            type: object
+            additionalProperties: true
+    TaskCreate:
+      type: object
+      required:
+      - application
+      - description
+      - job
+      properties:
+        application:
+          type: string
+          description: Application name
+        description:
+          type: string
+          description: Task description
+        job:
+          type: array
+          description: List of task job operations
           items:
             type: object
             additionalProperties: true

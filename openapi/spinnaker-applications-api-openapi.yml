@@ -71,6 +71,24 @@ paths:
           description: Application not found
 components:
   schemas:
+    ApplicationDetail:
+      type: object
+      description: Full application details including attributes and configuration
+      properties:
+        name:
+          type: object
+          description: Application name and metadata
+        attributes:
+          $ref: '#/components/schemas/Application'
+        clusters:
+          type: object
+          description: Cluster map by account
+        instances:
+          type: object
+          description: Instance map
+        loadBalancers:
+          type: object
+          description: Load balancer map
     Application:
       type: object
       description: A Spinnaker application grouping cloud resources
@@ -93,24 +111,6 @@ components:
         updated:
           type: integer
           description: Last updated timestamp in milliseconds
-    ApplicationDetail:
-      type: object
-      description: Full application details including attributes and configuration
-      properties:
-        name:
-          type: object
-          description: Application name and metadata
-        attributes:
-          $ref: '#/components/schemas/Application'
-        clusters:
-          type: object
-          description: Cluster map by account
-        instances:
-          type: object
-          description: Instance map
-        loadBalancers:
-          type: object
-          description: Load balancer map
   securitySchemes:
     oauth2:
       type: oauth2
