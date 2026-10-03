@@ -82,13 +82,6 @@ paths:
                 $ref: '#/components/schemas/TaskRef'
 components:
   schemas:
-    TaskRef:
-      type: object
-      description: Reference to a created or invoked task
-      properties:
-        ref:
-          type: string
-          description: Task reference URL path
     Task:
       type: object
       description: A Spinnaker task representing a discrete operation
@@ -121,6 +114,13 @@ components:
           items:
             type: object
             additionalProperties: true
+    TaskRef:
+      type: object
+      description: Reference to a created or invoked task
+      properties:
+        ref:
+          type: string
+          description: Task reference URL path
     TaskCreate:
       type: object
       required:
