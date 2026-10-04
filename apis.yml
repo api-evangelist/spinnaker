@@ -220,6 +220,9 @@ apis:
   - type: SpectralRules
     url: rules/spinnaker-rules.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/spinnaker-capability-edges.yml
+    name: Spinnaker Business Capability Map
   - type: IssueTracker
     url: https://github.com/spinnaker/gate/issues
   - type: Releases

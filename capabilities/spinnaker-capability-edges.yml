@@ -1,0 +1,35 @@
+slug: spinnaker
+provider: Spinnaker
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Build Services
+  spec_file: spinnaker-build-services-api-openapi.yml
+  capability_id: BC-4210.10
+  capability_id_l1: BC-4210
+  capability_name: Continuous Integration Management
+  confidence: 0.78
+  evidence: GET /v2/builds listBuildMasters "List Build Masters"; GET /v2/builds/{buildMaster}/jobs "List
+    Build Master Jobs"
+  reason: Build masters and build jobs are CI servers (e.g. Jenkins) integrated into the delivery pipeline,
+    matching Continuous Integration Management (build pipelines, artefact production).
+- tag: Pipelines
+  spec_file: spinnaker-pipelines-api-openapi.yml
+  capability_id: BC-4210.40
+  capability_id_l1: BC-4210
+  capability_name: Deployment Orchestration
+  confidence: 0.78
+  evidence: POST /pipelines savePipeline "Save Pipeline Definition"; PUT /pipelines/{id}/cancel "Cancel
+    Pipeline Execution"; PUT /pipelines/{id}/pause "Pause Pipeline Execution"
+  reason: Defining, invoking and controlling delivery pipeline executions on a continuous-delivery platform
+    is deployment orchestration; some overlap with CI management explains the sub-0.9 confidence.
