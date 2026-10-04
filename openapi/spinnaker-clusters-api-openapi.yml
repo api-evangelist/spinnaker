@@ -81,21 +81,6 @@ paths:
                   $ref: '#/components/schemas/ServerGroup'
 components:
   schemas:
-    Cluster:
-      type: object
-      description: A Spinnaker cluster grouping server groups
-      properties:
-        name:
-          type: string
-          description: Cluster name
-        account:
-          type: string
-          description: Cloud account name
-        serverGroups:
-          type: array
-          description: Server groups in this cluster
-          items:
-            $ref: '#/components/schemas/ServerGroup'
     ServerGroup:
       type: object
       description: A cloud server group (ASG, ReplicaSet, etc.)
@@ -138,6 +123,21 @@ components:
         disabled:
           type: boolean
           description: Whether the server group is disabled
+    Cluster:
+      type: object
+      description: A Spinnaker cluster grouping server groups
+      properties:
+        name:
+          type: string
+          description: Cluster name
+        account:
+          type: string
+          description: Cloud account name
+        serverGroups:
+          type: array
+          description: Server groups in this cluster
+          items:
+            $ref: '#/components/schemas/ServerGroup'
   securitySchemes:
     oauth2:
       type: oauth2

@@ -232,13 +232,6 @@ paths:
           description: Pipeline execution resumed successfully
 components:
   schemas:
-    TaskRef:
-      type: object
-      description: Reference to a created or invoked task
-      properties:
-        ref:
-          type: string
-          description: Task reference URL path
     PipelineExecution:
       type: object
       description: A pipeline execution instance
@@ -329,6 +322,13 @@ components:
         updateTs:
           type: string
           description: Timestamp of last modification
+    TaskRef:
+      type: object
+      description: Reference to a created or invoked task
+      properties:
+        ref:
+          type: string
+          description: Task reference URL path
     StageExecution:
       type: object
       description: A single stage within a pipeline execution
