@@ -42,7 +42,7 @@ tags:
   - CI/CD
 url: https://raw.githubusercontent.com/api-evangelist/spinnaker/refs/heads/main/apis.yml
 created: '2026-03-26'
-modified: '2026-05-19'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: spinnaker:spinnaker-applications-api
@@ -220,6 +220,8 @@ apis:
   - type: SpectralRules
     url: rules/spinnaker-rules.yml
 common:
+  - url: https://blog.spinnaker.io/feed
+    type: BlogRSS
   - type: CapabilityMap
     url: capabilities/spinnaker-capability-edges.yml
     name: Spinnaker Business Capability Map
