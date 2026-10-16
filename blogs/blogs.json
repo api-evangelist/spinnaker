@@ -2,8 +2,15 @@
   "repo": "spinnaker",
   "feeds": [
     {
-      "source": "https://join.spinnaker.io/",
-      "error": "URLError"
+      "source": "https://blog.spinnaker.io/feed",
+      "feed_url": "https://blog.spinnaker.io/feed",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://spinnaker.io/blog/",
+      "error": "HTTPError"
     },
     {
       "source": "https://spinnaker.io/index.xml",
@@ -13,6 +20,6 @@
       "method": "feed"
     }
   ],
-  "fetched": "2026-10-03T12:30:02Z",
+  "fetched": "2026-10-10T13:15:00Z",
   "post_count": 53
 }
