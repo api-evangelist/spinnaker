@@ -232,50 +232,6 @@ paths:
           description: Pipeline execution resumed successfully
 components:
   schemas:
-    PipelineExecution:
-      type: object
-      description: A pipeline execution instance
-      properties:
-        id:
-          type: string
-          description: Unique execution ID
-        application:
-          type: string
-          description: Application name
-        name:
-          type: string
-          description: Pipeline name
-        status:
-          type: string
-          description: Current execution status
-          enum:
-          - NOT_STARTED
-          - RUNNING
-          - PAUSED
-          - SUSPENDED
-          - SUCCEEDED
-          - FAILED_CONTINUE
-          - TERMINAL
-          - CANCELED
-          - REDIRECT
-          - STOPPED
-          - SKIPPED
-          - BUFFERED
-        startTime:
-          type: integer
-          description: Execution start time in milliseconds
-        endTime:
-          type: integer
-          description: Execution end time in milliseconds
-        stages:
-          type: array
-          description: List of stage executions
-          items:
-            $ref: '#/components/schemas/StageExecution'
-        trigger:
-          type: object
-          description: Trigger that initiated this execution
-          additionalProperties: true
     PipelineConfig:
       type: object
       description: A Spinnaker pipeline configuration definition
@@ -322,13 +278,6 @@ components:
         updateTs:
           type: string
           description: Timestamp of last modification
-    TaskRef:
-      type: object
-      description: Reference to a created or invoked task
-      properties:
-        ref:
-          type: string
-          description: Task reference URL path
     StageExecution:
       type: object
       description: A single stage within a pipeline execution
@@ -363,6 +312,57 @@ components:
         context:
           type: object
           description: Stage context data
+          additionalProperties: true
+    TaskRef:
+      type: object
+      description: Reference to a created or invoked task
+      properties:
+        ref:
+          type: string
+          description: Task reference URL path
+    PipelineExecution:
+      type: object
+      description: A pipeline execution instance
+      properties:
+        id:
+          type: string
+          description: Unique execution ID
+        application:
+          type: string
+          description: Application name
+        name:
+          type: string
+          description: Pipeline name
+        status:
+          type: string
+          description: Current execution status
+          enum:
+          - NOT_STARTED
+          - RUNNING
+          - PAUSED
+          - SUSPENDED
+          - SUCCEEDED
+          - FAILED_CONTINUE
+          - TERMINAL
+          - CANCELED
+          - REDIRECT
+          - STOPPED
+          - SKIPPED
+          - BUFFERED
+        startTime:
+          type: integer
+          description: Execution start time in milliseconds
+        endTime:
+          type: integer
+          description: Execution end time in milliseconds
+        stages:
+          type: array
+          description: List of stage executions
+          items:
+            $ref: '#/components/schemas/StageExecution'
+        trigger:
+          type: object
+          description: Trigger that initiated this execution
           additionalProperties: true
   securitySchemes:
     oauth2:
