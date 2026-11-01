@@ -1,4 +1,4 @@
-# Spinnaker (spinnaker)
+# Spinnaker
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,68 +66,177 @@
 
 Spinnaker is an open source multi-cloud continuous delivery platform for releasing software changes with high velocity and confidence. Originally developed at Netflix and Google, Spinnaker provides a deployment platform supporting AWS, GCP, Azure, Kubernetes, and other cloud providers. The Gate API is the primary REST interface for all Spinnaker operations.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/spinnaker/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/spinnaker/refs/heads/main/apis.yml)
+**Areas:** Continuous Delivery · Containers · DevOps · Multi-Cloud · Pipelines · CI/CD
 
-## Scope
+## Spinnaker on APIs.io
 
-- **Type:** Index
+Everything profiled for Spinnaker is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/spinnaker/](https://apis.io/providers/spinnaker/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (9)
 
-- Continuous Delivery
-- Containers
-- DevOps
-- Multi-Cloud
-- Pipelines
+- [Spinnaker Applications API](https://apis.io/apis/spinnaker/spinnaker-applications-api/) — Application management operations for Spinnaker application lifecycle including creation, retrieval, and pipeline access
+- [Spinnaker Build Services API](https://apis.io/apis/spinnaker/spinnaker-build-services-api/) — CI build service integration for discovering build masters, jobs, and build artifacts
+- [Spinnaker Clusters API](https://apis.io/apis/spinnaker/spinnaker-clusters-api/) — Cloud cluster and server group operations for managing deployment targets across cloud providers
+- [Spinnaker Images API](https://apis.io/apis/spinnaker/spinnaker-images-api/) — Cloud image discovery and management across cloud providers and regions
+- [Spinnaker Load Balancers API](https://apis.io/apis/spinnaker/spinnaker-load-balancers-api/) — Load balancer management operations for cloud load balancing resources across supported cloud providers
+- [Spinnaker Pipelines API](https://apis.io/apis/spinnaker/spinnaker-pipelines-api/) — Pipeline definition and execution management including saving pipeline configurations, triggering runs, and controlling execution state
+- [Spinnaker Projects API](https://apis.io/apis/spinnaker/spinnaker-projects-api/) — Spinnaker project management for grouping applications and pipelines into organizational units
+- [Spinnaker Search API](https://apis.io/apis/spinnaker/spinnaker-search-api/) — Cross-entity search for finding applications, clusters, and other Spinnaker-managed resources
+- [Spinnaker Tasks API](https://apis.io/apis/spinnaker/spinnaker-tasks-api/) — Task management for tracking long-running Spinnaker operations and checking their completion status
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-26
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Agentic access (1)
 
-### Spinnaker Gate API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-Gate is the Spinnaker API Gateway — the primary REST interface for all Spinnaker operations including application management, pipeline execution, cluster management, and infrastructure discovery. Gate runs on port 8084 and is used by the Spinnaker UI (Deck) as well as external automation scripts and integrations. Supports OAuth 2.0, SAML, LDAP, and X.509 certificate authentication.
+- [Spinnaker Agentic Access](https://apis.io/agentic-access/spinnaker/spinnaker-agentic-access/)
 
-- **Human URL:** [https://spinnaker.io/docs/reference/api/](https://spinnaker.io/docs/reference/api/)
+#### JSON Schema (1)
 
-#### Tags
+The data models the API reads and writes.
 
-- Applications
-- Clusters
-- Continuous Delivery
-- Deployments
-- Pipelines
+- [Spinnaker Pipeline Execution](https://apis.io/schemas/spinnaker/spinnaker-pipeline/)
 
-#### Properties
+#### JSON Structure (1)
 
-- [Documentation](https://spinnaker.io/docs/reference/api/)
-- [Swagger U I](https://spinnaker.io/docs/reference/api/docs.html)
-- [GitHub Repository](https://github.com/spinnaker/gate)
-- [OpenAPI](openapi/spinnaker-gate-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/spinnaker-gate.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/spinnaker-gate.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Spectral Rules](rules/spinnaker-rules.yml)
+Data models expressed in JSON Structure.
 
-## Common Properties
+- [Spinnaker Pipeline Structure](https://apis.io/json-structure/spinnaker/spinnaker-pipeline-structure/)
 
-- [LinkedIn](https://www.linkedin.com/company/spinnaker-cd)
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Spinnaker Context](https://apis.io/jsonld/spinnaker/spinnaker-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Spinnaker Vocabulary](https://apis.io/vocabularies/spinnaker/spinnaker-vocabulary/)
+
+#### Examples (2)
+
+Example requests and responses.
+
+- [Spinnaker Invoke Pipeline Example](https://apis.io/examples/spinnaker/spinnaker-invoke-pipeline-example/)
+- [Spinnaker List Applications Example](https://apis.io/examples/spinnaker/spinnaker-list-applications-example/)
+
+#### Collections (10)
+
+Postman and Open Collection request collections.
+
+- [Spinnaker Gate Applications API](https://apis.io/collections/spinnaker/open-spinnaker-applications-api/)
+- [Spinnaker Gate Applications Build Services API](https://apis.io/collections/spinnaker/open-spinnaker-build-services-api/)
+- [Spinnaker Gate Applications Clusters API](https://apis.io/collections/spinnaker/open-spinnaker-clusters-api/)
+- [Spinnaker Gate API](https://apis.io/collections/spinnaker/open-spinnaker-gate/)
+- [Spinnaker Gate Applications Images API](https://apis.io/collections/spinnaker/open-spinnaker-images-api/)
+- [Spinnaker Gate Applications Load Balancers API](https://apis.io/collections/spinnaker/open-spinnaker-load-balancers-api/)
+- [Spinnaker Gate Applications Pipelines API](https://apis.io/collections/spinnaker/open-spinnaker-pipelines-api/)
+- [Spinnaker Gate Applications Projects API](https://apis.io/collections/spinnaker/open-spinnaker-projects-api/)
+- [Spinnaker Gate Applications Search API](https://apis.io/collections/spinnaker/open-spinnaker-search-api/)
+- [Spinnaker Gate Applications Tasks API](https://apis.io/collections/spinnaker/open-spinnaker-tasks-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Spinnaker — jsonschema rules](https://apis.io/rules/spinnaker/spinnaker-jsonschema-spectral-rules/)
+- [Spinnaker API Rules](https://apis.io/rules/spinnaker/spinnaker-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Spinnaker Authentication](https://apis.io/security/spinnaker/spinnaker-authentication/)
+- [Spinnaker Domain Security](https://apis.io/security/spinnaker/spinnaker-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Spinnaker Scopes](https://apis.io/scopes/spinnaker/spinnaker-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Spinnaker Plans Pricing](https://apis.io/plans/spinnaker/spinnaker-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Spinnaker Rate Limits](https://apis.io/rate-limits/spinnaker/spinnaker-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Spinnaker Finops](https://apis.io/finops/spinnaker/spinnaker-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://spinnaker.io/)
 - [Documentation](https://spinnaker.io/docs/)
-- [GitHub Organization](https://github.com/spinnaker)
-- [GitHub Repository](https://github.com/spinnaker/spinnaker)
-- [Community](https://spinnaker.io/community/)
-- [Slack](https://join.spinnaker.io/)
-- [Blog](https://spinnaker.io/blog/)
-- [Roadmap](https://github.com/spinnaker/governance/tree/master/rfc)
 - [Changelog](https://spinnaker.io/changelogs/)
-- [OpenAPI](openapi/spinnaker-gate-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Spectral Rules](rules/spinnaker-rules.yml)
-- [Vocabulary](vocabulary/spinnaker-vocabulary.yml)
+- [Blog](https://spinnaker.io/blog/)
+- [GitHub](https://github.com/spinnaker)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 36.0** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 52.1 |
+| Contract governance | 27.3 |
+| Operational transparency | 15.8 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 7.9 |
+
+**Agent readiness 26.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bound |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 26.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/spinnaker/](https://apis.io/providers/spinnaker/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Spinnaker: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/spinnaker/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
